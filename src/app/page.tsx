@@ -211,57 +211,68 @@ export default function Home() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-6xl">
-      {/* Header */}
-      <header className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          Kalkulator ZUS i PIT 2025
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Porównaj JDG i sp. z o.o. - znajdź najlepszą formę dla swojej działalności
-        </p>
-      </header>
+    <>
+      {/* Animated Background */}
+      <div className="animated-bg" />
+      <div className="floating-orb orb-1" />
+      <div className="floating-orb orb-2" />
+      <div className="floating-orb orb-3" />
 
-      {/* Tabs */}
-      <div className="flex justify-center mb-8">
-        <div className="inline-flex rounded-xl bg-gray-100 dark:bg-gray-800 p-1 flex-wrap justify-center">
-          {[
-            { id: 'jdg', label: 'JDG' },
-            { id: 'spzoo', label: 'Sp. z o.o.' },
-            { id: 'comparison', label: 'Porównanie' },
-            { id: 'b2bVsUop', label: 'B2B vs Etat' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as BusinessForm)}
-              className={`px-4 md:px-6 py-2 rounded-lg font-medium transition-all text-sm md:text-base ${
-                activeTab === tab.id
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+      <main className="container mx-auto px-4 py-8 max-w-6xl relative">
+        {/* Header */}
+        <header className="text-center mb-12">
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full glass text-sm text-gray-300">
+            Aktualne stawki na 2025 rok
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="gradient-text">Kalkulator ZUS i PIT</span>
+          </h1>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Porównaj JDG i sp. z o.o. - znajdź najlepszą formę dla swojej działalności
+          </p>
+        </header>
+
+        {/* Tabs */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex rounded-2xl glass p-1.5 flex-wrap justify-center gap-1">
+            {[
+              { id: 'jdg', label: 'JDG', icon: '👤' },
+              { id: 'spzoo', label: 'Sp. z o.o.', icon: '🏢' },
+              { id: 'comparison', label: 'Porównanie', icon: '⚖️' },
+              { id: 'b2bVsUop', label: 'B2B vs Etat', icon: '💼' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as BusinessForm)}
+                className={`px-4 md:px-5 py-2.5 rounded-xl font-medium transition-all text-sm md:text-base flex items-center gap-2 ${
+                  activeTab === tab.id
+                    ? 'tab-active text-white shadow-lg'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span className="hidden md:inline">{tab.icon}</span>
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
-        {/* Input Form */}
-        <div className="md:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sticky top-8">
-            <h2 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
-              Twoje dane
-            </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Input Form */}
+          <div className="md:col-span-1">
+            <div className="glass-card rounded-2xl p-6 sticky top-8">
+              <h2 className="text-xl font-semibold mb-6 text-white flex items-center gap-2">
+                <span className="text-2xl">⚙️</span> Twoje dane
+              </h2>
 
             <div className="space-y-5">
               {/* Monthly Revenue with Slider */}
               {activeTab !== 'b2bVsUop' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-3">
                     Miesięczny przychód brutto
                   </label>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <input
                         type="range"
@@ -270,19 +281,19 @@ export default function Home() {
                         step="1000"
                         value={monthlyRevenue}
                         onChange={(e) => setMonthlyRevenue(Number(e.target.value))}
-                        className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        className="flex-1"
                       />
                       <div className="relative w-28">
                         <input
                           type="number"
                           value={monthlyRevenue}
                           onChange={(e) => setMonthlyRevenue(Number(e.target.value) || 0)}
-                          className="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm text-right pr-8"
+                          className="w-full px-2 py-2 rounded-lg text-white text-sm text-right pr-8"
                         />
-                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">zł</span>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs">zł</span>
                       </div>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-400">
+                    <div className="flex justify-between text-xs text-gray-500">
                       <span>5 000 zł</span>
                       <span>100 000 zł</span>
                     </div>
@@ -293,10 +304,10 @@ export default function Home() {
               {/* Monthly Costs with Slider */}
               {activeTab !== 'b2bVsUop' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-3">
                     Miesięczne koszty operacyjne
                   </label>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <input
                         type="range"
@@ -305,19 +316,19 @@ export default function Home() {
                         step="500"
                         value={monthlyCosts}
                         onChange={(e) => setMonthlyCosts(Number(e.target.value))}
-                        className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        className="flex-1"
                       />
                       <div className="relative w-28">
                         <input
                           type="number"
                           value={monthlyCosts}
                           onChange={(e) => setMonthlyCosts(Number(e.target.value) || 0)}
-                          className="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm text-right pr-8"
+                          className="w-full px-2 py-2 rounded-lg text-white text-sm text-right pr-8"
                         />
-                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">zł</span>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs">zł</span>
                       </div>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-400">
+                    <div className="flex justify-between text-xs text-gray-500">
                       <span>0 zł</span>
                       <span>30 000 zł</span>
                     </div>
@@ -329,10 +340,10 @@ export default function Home() {
               {activeTab === 'b2bVsUop' && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Twój przychód B2B (faktura)
+                    <label className="block text-sm font-medium text-gray-300 mb-3">
+                      💼 Twój przychód B2B (faktura)
                     </label>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         <input
                           type="range"
@@ -341,26 +352,26 @@ export default function Home() {
                           step="1000"
                           value={monthlyRevenue}
                           onChange={(e) => setMonthlyRevenue(Number(e.target.value))}
-                          className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-green-600"
+                          className="flex-1 slider-green"
                         />
                         <div className="relative w-28">
                           <input
                             type="number"
                             value={monthlyRevenue}
                             onChange={(e) => setMonthlyRevenue(Number(e.target.value) || 0)}
-                            className="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm text-right pr-8"
+                            className="w-full px-2 py-2 rounded-lg text-white text-sm text-right pr-8"
                           />
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">zł</span>
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs">zł</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Porównaj z etatem brutto
+                    <label className="block text-sm font-medium text-gray-300 mb-3">
+                      👔 Porównaj z etatem brutto
                     </label>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         <input
                           type="range"
@@ -369,19 +380,19 @@ export default function Home() {
                           step="500"
                           value={uopGross}
                           onChange={(e) => setUopGross(Number(e.target.value))}
-                          className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                          className="flex-1 slider-purple"
                         />
                         <div className="relative w-28">
                           <input
                             type="number"
                             value={uopGross}
                             onChange={(e) => setUopGross(Number(e.target.value) || 0)}
-                            className="w-full px-2 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm text-right pr-8"
+                            className="w-full px-2 py-2 rounded-lg text-white text-sm text-right pr-8"
                           />
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">zł</span>
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs">zł</span>
                         </div>
                       </div>
-                      <div className="flex justify-between text-xs text-gray-400">
+                      <div className="flex justify-between text-xs text-gray-500">
                         <span>4 666 zł (min.)</span>
                         <span>50 000 zł</span>
                       </div>
@@ -393,18 +404,18 @@ export default function Home() {
               {/* JDG-specific options */}
               {(activeTab === 'jdg' || activeTab === 'comparison') && (
                 <>
-                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  <div className="border-t border-white/10 pt-4">
+                    <p className="text-sm font-medium text-gray-300 mb-3">
                       Opcje JDG
                     </p>
 
                     {/* ZUS Type */}
                     <div className="mb-4">
-                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Rodzaj ZUS</label>
+                      <label className="block text-xs text-gray-500 mb-1.5">Rodzaj ZUS</label>
                       <select
                         value={zusType}
                         onChange={(e) => setZusType(e.target.value as ZusType)}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                       >
                         <option value="full">Pełny ZUS (~1 774 zł)</option>
                         <option value="preferential">Preferencyjny (~600 zł)</option>
@@ -415,11 +426,11 @@ export default function Home() {
 
                     {/* Ryczalt Rate */}
                     <div className="mb-4">
-                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Stawka ryczałtu</label>
+                      <label className="block text-xs text-gray-500 mb-1.5">Stawka ryczałtu</label>
                       <select
                         value={ryczaltRate}
                         onChange={(e) => setRyczaltRate(Number(e.target.value))}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                        className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                       >
                         <option value={0.17}>17% - Wolne zawody (lekarze, prawnicy)</option>
                         <option value={0.15}>15% - Usługi niematerialne</option>
@@ -432,13 +443,13 @@ export default function Home() {
                     </div>
 
                     {/* Checkboxes */}
-                    <label className="flex items-center gap-2 cursor-pointer mb-2">
-                      <input type="checkbox" checked={useIpBox} onChange={(e) => setUseIpBox(e.target.checked)} className="rounded" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">IP Box (5%)</span>
+                    <label className="flex items-center gap-3 cursor-pointer mb-3 group">
+                      <input type="checkbox" checked={useIpBox} onChange={(e) => setUseIpBox(e.target.checked)} />
+                      <span className="text-sm text-gray-300 group-hover:text-white transition-colors">IP Box (5%)</span>
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" checked={useCopyrightCosts} onChange={(e) => setUseCopyrightCosts(e.target.checked)} className="rounded" />
-                      <span className="text-sm text-gray-700 dark:text-gray-300">50% koszty autorskie</span>
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <input type="checkbox" checked={useCopyrightCosts} onChange={(e) => setUseCopyrightCosts(e.target.checked)} />
+                      <span className="text-sm text-gray-300 group-hover:text-white transition-colors">50% koszty autorskie</span>
                     </label>
                   </div>
                 </>
@@ -446,16 +457,16 @@ export default function Home() {
 
               {/* Sp. z o.o.-specific options */}
               {(activeTab === 'spzoo' || activeTab === 'comparison') && (
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <div className="border-t border-white/10 pt-4">
+                  <p className="text-sm font-medium text-gray-300 mb-3">
                     Opcje Sp. z o.o.
                   </p>
                   <div>
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Stawka CIT</label>
+                    <label className="block text-xs text-gray-500 mb-1.5">Stawka CIT</label>
                     <select
                       value={citRate}
                       onChange={(e) => setCitRate(e.target.value as CitRate)}
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                      className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                     >
                       <option value="small">9% (mały podatnik)</option>
                       <option value="standard">19% (standardowy)</option>
@@ -466,16 +477,16 @@ export default function Home() {
 
               {/* B2B options */}
               {activeTab === 'b2bVsUop' && (
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <div className="border-t border-white/10 pt-4">
+                  <p className="text-sm font-medium text-gray-300 mb-3">
                     Opcje B2B (JDG)
                   </p>
                   <div className="mb-4">
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Rodzaj ZUS</label>
+                    <label className="block text-xs text-gray-500 mb-1.5">Rodzaj ZUS</label>
                     <select
                       value={zusType}
                       onChange={(e) => setZusType(e.target.value as ZusType)}
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                      className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                     >
                       <option value="full">Pełny ZUS (~1 774 zł)</option>
                       <option value="preferential">Preferencyjny (~600 zł)</option>
@@ -484,11 +495,11 @@ export default function Home() {
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Forma opodatkowania</label>
+                    <label className="block text-xs text-gray-500 mb-1.5">Forma opodatkowania</label>
                     <select
                       value={ryczaltRate}
                       onChange={(e) => setRyczaltRate(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                      className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                     >
                       <option value={0.12}>12% Ryczałt - IT</option>
                       <option value={0.085}>8,5% Ryczałt - Usługi</option>
@@ -499,8 +510,9 @@ export default function Home() {
               )}
 
               {/* Real-time indicator */}
-              <div className="text-center text-xs text-gray-400 pt-2">
-                ⚡ Wyniki aktualizują się w czasie rzeczywistym
+              <div className="text-center text-xs text-gray-500 pt-4 flex items-center justify-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                Wyniki na żywo
               </div>
             </div>
           </div>
@@ -585,12 +597,128 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-sm text-gray-500">
-        <p>Kalkulator ZUS i PIT 2025 | Dane aktualne na styczeń 2025</p>
-        <p className="mt-1 text-xs">Obliczenia mają charakter poglądowy i nie stanowią porady podatkowej.</p>
-      </footer>
-    </main>
+        {/* FAQ Section */}
+        <section className="mt-16" id="faq">
+          <h2 className="text-2xl font-bold text-center mb-8">
+            <span className="gradient-text">Najczęściej zadawane pytania</span>
+          </h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {faqData.map((faq, index) => (
+              <FAQItem key={index} question={faq.question} answer={faq.answer} />
+            ))}
+          </div>
+        </section>
+
+        {/* SEO Content Section */}
+        <section className="mt-16 glass rounded-2xl p-8" id="poradnik">
+          <h2 className="text-xl font-bold text-white mb-6">Jak wybrać formę opodatkowania w 2025?</h2>
+          <div className="grid md:grid-cols-3 gap-6 text-sm text-gray-300">
+            <article>
+              <h3 className="font-semibold text-white mb-2">📊 Skala podatkowa</h3>
+              <p>Najlepsza dla osób z niższymi dochodami (do ~10 tys. zł/mc). Stawki 12% i 32%, kwota wolna 30 000 zł rocznie. Możliwość rozliczenia z małżonkiem.</p>
+            </article>
+            <article>
+              <h3 className="font-semibold text-white mb-2">📈 Podatek liniowy 19%</h3>
+              <p>Opłaca się przy dochodach powyżej ~12 tys. zł/mc. Stała stawka bez progów. Brak kwoty wolnej i rozliczenia z małżonkiem.</p>
+            </article>
+            <article>
+              <h3 className="font-semibold text-white mb-2">💰 Ryczałt</h3>
+              <p>Najczęściej najkorzystniejszy dla IT (12%) i usług (8,5%). Podatek od przychodu, nie dochodu - nie odliczysz kosztów. Najniższa składka zdrowotna.</p>
+            </article>
+          </div>
+          <div className="mt-6 pt-6 border-t border-white/10 grid md:grid-cols-2 gap-6 text-sm text-gray-300">
+            <article>
+              <h3 className="font-semibold text-white mb-2">🏢 Sp. z o.o. - kiedy się opłaca?</h3>
+              <p>Przy wysokich przychodach (powyżej 15-20 tys. zł/mc) i planach na rozwój. CIT 9% dla małych podatników + 19% dywidenda. Wymaga pełnej księgowości (~800 zł/mc).</p>
+            </article>
+            <article>
+              <h3 className="font-semibold text-white mb-2">💼 B2B vs etat</h3>
+              <p>B2B opłaca się gdy stawka jest wyższa o ~20-30% od brutto na etacie. Pamiętaj o braku urlopu, L4 i stabilności zatrudnienia na B2B.</p>
+            </article>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="mt-16 pt-8 border-t border-white/10 text-center">
+          <div className="glass rounded-2xl p-6 inline-block">
+            <p className="text-gray-400 mb-1">Kalkulator ZUS i PIT 2025</p>
+            <p className="text-xs text-gray-500">Obliczenia mają charakter poglądowy i nie stanowią porady podatkowej.</p>
+          </div>
+          <nav className="mt-6 flex justify-center gap-6 text-sm text-gray-500">
+            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
+            <a href="#poradnik" className="hover:text-white transition-colors">Poradnik</a>
+          </nav>
+        </footer>
+
+        {/* FAQ Schema JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: faqData.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
+                },
+              })),
+            }),
+          }}
+        />
+      </main>
+    </>
+  );
+}
+
+// FAQ Data
+const faqData = [
+  {
+    question: 'Ryczałt czy skala podatkowa - co się bardziej opłaca?',
+    answer: 'Zależy od wysokości dochodów i kosztów. Ryczałt (12% dla IT) jest najczęściej korzystniejszy dla programistów i freelancerów z niskimi kosztami. Skala podatkowa opłaca się przy niższych dochodach (do ~8 tys. zł/mc) lub wysokich kosztach uzyskania przychodu. Użyj naszego kalkulatora, aby porównać obie opcje dla Twojej sytuacji.',
+  },
+  {
+    question: 'Ile wynosi ZUS dla JDG w 2025 roku?',
+    answer: 'Pełny ZUS w 2025 roku wynosi około 1 774 zł miesięcznie (składki społeczne + zdrowotna). Preferencyjny ZUS (pierwsze 24 miesiące) to około 600 zł. Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych - płacisz tylko zdrowotną.',
+  },
+  {
+    question: 'Kiedy opłaca się założyć sp. z o.o. zamiast JDG?',
+    answer: 'Sp. z o.o. zaczyna się opłacać przy przychodach powyżej 15-20 tys. zł miesięcznie. Główne zalety to CIT 9% (mały podatnik), ograniczona odpowiedzialność i prestiż. Wady to podwójne opodatkowanie (CIT + dywidenda), droga księgowość (~800 zł/mc) i więcej formalności.',
+  },
+  {
+    question: 'B2B czy umowa o pracę - co wybrać?',
+    answer: 'B2B daje wyższe zarobki netto, ale brak płatnego urlopu, L4 i stabilności. Opłaca się gdy stawka B2B jest wyższa o ~20-30% od brutto na etacie. Na etacie masz 26 dni urlopu (warte ~10% rocznej pensji) i pełne ubezpieczenie chorobowe.',
+  },
+  {
+    question: 'Co to jest IP Box i dla kogo?',
+    answer: 'IP Box to preferencyjna stawka 5% podatku dla dochodów z kwalifikowanych praw własności intelektualnej (programy komputerowe, patenty). Wymaga prowadzenia ewidencji i dokumentacji. Opłaca się dla programistów tworzących własne oprogramowanie lub pracujących nad innowacyjnymi projektami.',
+  },
+  {
+    question: 'Jak działa ulga na start dla nowych firm?',
+    answer: 'Ulga na start zwalnia z opłacania składek społecznych ZUS przez pierwsze 6 miesięcy działalności. Płacisz tylko składkę zdrowotną (~420 zł dla minimalnej podstawy). Po 6 miesiącach możesz przejść na preferencyjny ZUS (kolejne 24 miesiące ze zniżką).',
+  },
+  {
+    question: 'Jaka stawka ryczałtu dla programisty?',
+    answer: 'Programiści najczęściej płacą ryczałt 12% od przychodu. Ta stawka obejmuje usługi IT, programowanie, doradztwo techniczne. Niektóre usługi mogą kwalifikować się do 8,5% (np. usługi dla firm). Sprawdź klasyfikację PKWiU swojej działalności.',
+  },
+  {
+    question: 'Ile wynosi składka zdrowotna w 2025?',
+    answer: 'Składka zdrowotna zależy od formy opodatkowania: Skala podatkowa - 9% dochodu (min. ~420 zł). Podatek liniowy - 4,9% dochodu (min. ~420 zł). Ryczałt - stała kwota zależna od przychodu: do 60 tys. zł/rok (~462 zł/mc), 60-300 tys. zł (~769 zł/mc), powyżej 300 tys. zł (~1 385 zł/mc).',
+  },
+];
+
+// FAQ Item Component
+function FAQItem({ question, answer }: { question: string; answer: string }) {
+  return (
+    <details className="glass-card rounded-xl p-4 group cursor-pointer h-fit">
+      <summary className="font-semibold text-white flex items-center justify-between list-none">
+        <span className="pr-4">{question}</span>
+        <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+      </summary>
+      <p className="mt-3 text-gray-400 text-sm leading-relaxed">{answer}</p>
+    </details>
   );
 }
 
@@ -622,15 +750,15 @@ function JdgResultsView({
 
   return (
     <div className="space-y-6">
-      <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-6">
+      <div className="glass glow-green rounded-2xl p-6 winner-pulse">
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-2xl">🏆</span>
-          <h3 className="text-xl font-bold text-green-800 dark:text-green-200">
-            Najlepsza opcja JDG: {best.label}
+          <span className="text-3xl">🏆</span>
+          <h3 className="text-xl font-bold text-white">
+            Najlepsza opcja JDG: <span className="text-green-400">{best.label}</span>
           </h3>
         </div>
-        <p className="text-green-700 dark:text-green-300">
-          Rocznie na rękę: <strong>{formatCurrency(best.net)}</strong>
+        <p className="text-gray-300">
+          Rocznie na rękę: <strong className="text-2xl text-green-400">{formatCurrency(best.net)}</strong>
         </p>
       </div>
 
@@ -679,15 +807,15 @@ function SpzooResultsView({
 
   return (
     <div className="space-y-6">
-      <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-2xl p-6">
+      <div className="glass glow-purple rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-2xl">🏢</span>
-          <h3 className="text-xl font-bold text-purple-800 dark:text-purple-200">
-            Najlepsza opcja Sp. z o.o.: {best.label}
+          <span className="text-3xl">🏢</span>
+          <h3 className="text-xl font-bold text-white">
+            Najlepsza opcja Sp. z o.o.: <span className="text-purple-400">{best.label}</span>
           </h3>
         </div>
-        <p className="text-purple-700 dark:text-purple-300">
-          Rocznie na rękę: <strong>{formatCurrency(best.net)}</strong>
+        <p className="text-gray-300">
+          Rocznie na rękę: <strong className="text-2xl text-purple-400">{formatCurrency(best.net)}</strong>
         </p>
       </div>
 
@@ -695,15 +823,15 @@ function SpzooResultsView({
         {cards.map(({ key, data, label }) => (
           <div
             key={key}
-            className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-2 ${
-              best.key === key ? 'border-purple-500 ring-2 ring-purple-500/20' : 'border-transparent'
+            className={`glass-card rounded-2xl p-6 ${
+              best.key === key ? 'glow-purple border-purple-500/50' : ''
             }`}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 {label}
                 {best.key === key && (
-                  <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full border border-purple-500/30">
                     Najlepsza
                   </span>
                 )}
@@ -716,33 +844,33 @@ function SpzooResultsView({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
               <div>
                 <p className="text-xs text-gray-500 mb-1">CIT</p>
-                <p className="font-semibold">{formatCurrency(data.monthly.cit)}/mc</p>
+                <p className="font-semibold text-white">{formatCurrency(data.monthly.cit)}/mc</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500 mb-1">Podatek dywidenda</p>
-                <p className="font-semibold">{formatCurrency(data.monthly.dividendTax)}/mc</p>
+                <p className="font-semibold text-white">{formatCurrency(data.monthly.dividendTax)}/mc</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500 mb-1">Pensja netto</p>
-                <p className="font-semibold">{formatCurrency(data.monthly.ownerNetSalary)}/mc</p>
+                <p className="font-semibold text-white">{formatCurrency(data.monthly.ownerNetSalary)}/mc</p>
               </div>
               <div>
                 <p className="text-xs text-gray-500 mb-1">Na rękę łącznie</p>
-                <p className="font-bold text-green-600 text-lg">{formatCurrency(data.monthly.ownerTotalNet)}/mc</p>
+                <p className="font-bold text-green-400 text-lg">{formatCurrency(data.monthly.ownerTotalNet)}/mc</p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between text-sm">
+            <div className="pt-4 border-t border-white/10 flex justify-between text-sm">
               <span className="text-gray-500">Rocznie na rękę:</span>
-              <span className="font-bold text-green-600">{formatCurrency(data.yearly.ownerTotalNet)}</span>
+              <span className="font-bold text-green-400">{formatCurrency(data.yearly.ownerTotalNet)}</span>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 text-sm">
-        <p className="text-amber-800 dark:text-amber-200">
-          <strong>Uwaga:</strong> Sp. z o.o. wymaga pełnej księgowości (~800 zł/mc) oraz ma dodatkowe obowiązki formalne.
+      <div className="glass glow-orange rounded-xl p-4 text-sm">
+        <p className="text-amber-300">
+          <strong>⚠️ Uwaga:</strong> Sp. z o.o. wymaga pełnej księgowości (~800 zł/mc) oraz ma dodatkowe obowiązki formalne.
         </p>
       </div>
     </div>
@@ -983,14 +1111,14 @@ function ResultCard({
   formatPercent: (v: number) => string;
 }) {
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-2 ${
-      isBest ? 'border-green-500 ring-2 ring-green-500/20' : 'border-transparent'
+    <div className={`glass-card rounded-2xl p-6 ${
+      isBest ? 'glow-green border-green-500/50' : ''
     }`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           {label}
           {isBest && (
-            <span className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full">
+            <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full border border-green-500/30">
               Najlepsza
             </span>
           )}
@@ -1003,29 +1131,29 @@ function ResultCard({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
         <div>
           <p className="text-xs text-gray-500 mb-1">ZUS społeczny</p>
-          <p className="font-semibold">{formatCurrency(monthly.zusSocial)}/mc</p>
+          <p className="font-semibold text-white">{formatCurrency(monthly.zusSocial)}/mc</p>
         </div>
         <div>
           <p className="text-xs text-gray-500 mb-1">Zdrowotna</p>
-          <p className="font-semibold">{formatCurrency(monthly.zusHealth)}/mc</p>
+          <p className="font-semibold text-white">{formatCurrency(monthly.zusHealth)}/mc</p>
         </div>
         <div>
           <p className="text-xs text-gray-500 mb-1">Podatek</p>
-          <p className="font-semibold">{formatCurrency(monthly.tax)}/mc</p>
+          <p className="font-semibold text-white">{formatCurrency(monthly.tax)}/mc</p>
         </div>
         <div>
           <p className="text-xs text-gray-500 mb-1">Suma obciążeń</p>
-          <p className="font-semibold text-red-600">{formatCurrency(monthly.total)}/mc</p>
+          <p className="font-semibold text-red-400">{formatCurrency(monthly.total)}/mc</p>
         </div>
         <div>
           <p className="text-xs text-gray-500 mb-1">Na rękę</p>
-          <p className="font-bold text-green-600 text-lg">{formatCurrency(monthly.net)}/mc</p>
+          <p className="font-bold text-green-400 text-lg">{formatCurrency(monthly.net)}/mc</p>
         </div>
       </div>
 
-      <div className="pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between text-sm">
+      <div className="pt-4 border-t border-white/10 flex justify-between text-sm">
         <span className="text-gray-500">Rocznie na rękę:</span>
-        <span className="font-bold text-green-600">{formatCurrency(yearly.net)}</span>
+        <span className="font-bold text-green-400">{formatCurrency(yearly.net)}</span>
       </div>
     </div>
   );

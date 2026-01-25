@@ -1,0 +1,6 @@
+# Robots.txt for JDG Kalkulator
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jdg-kalkulator.pl/sitemap.xml
