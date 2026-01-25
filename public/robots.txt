@@ -1,6 +1,6 @@
-# Robots.txt for JDG Kalkulator
+# Robots.txt for ilezostanie.com
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://jdg-kalkulator.pl/sitemap.xml
+Sitemap: https://ilezostanie.com/sitemap.xml
