@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 
-const siteUrl = 'https://jdg-kalkulator.pl'; // Update with your actual domain
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
+
+const siteUrl = 'https://ilezostanie.com/';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -10,7 +13,7 @@ export const metadata: Metadata = {
     template: '%s | Kalkulator ZUS i PIT 2026',
   },
   description:
-    'Bezpłatny kalkulator ZUS i PIT na 2026 rok. Porównaj JDG (skala, liniowy, ryczałt) ze sp. z o.o. Sprawdź B2B vs etat. Oblicz ile zarobisz na rękę i która forma opodatkowania jest najlepsza.',
+    'Darmowy kalkulator ZUS i PIT 2026. Porównaj JDG (skala, liniowy, ryczałt) ze spółką z o.o. i etatem. Oblicz kwotę netto i znajdź najkorzystniejszą formę.',
   keywords: [
     'kalkulator ZUS 2026',
     'kalkulator PIT 2026',
@@ -143,6 +146,22 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
+        {GA_TRACKING_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_TRACKING_ID}');
+              `}
+            </Script>
+          </>
+        )}
         {children}
       </body>
     </html>
