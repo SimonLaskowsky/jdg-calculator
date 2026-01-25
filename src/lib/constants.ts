@@ -1,20 +1,20 @@
 /**
- * Stałe podatkowe i ZUS na rok 2025
+ * Stałe podatkowe i ZUS na rok 2026
  * Źródła: ZUS.pl, podatki.gov.pl
- * Ostatnia aktualizacja: Styczeń 2025
+ * Ostatnia aktualizacja: Styczeń 2026
  */
 
-export const TAX_YEAR = 2025;
+export const TAX_YEAR = 2026;
 
 // ===========================================
 // WYNAGRODZENIA BAZOWE
 // ===========================================
 
-/** Prognozowane przeciętne wynagrodzenie 2025 */
-export const PROJECTED_AVERAGE_WAGE = 8673;
+/** Prognozowane przeciętne wynagrodzenie 2026 */
+export const PROJECTED_AVERAGE_WAGE = 9420;
 
-/** Minimalne wynagrodzenie 2025 (od stycznia) */
-export const MINIMUM_WAGE = 4666;
+/** Minimalne wynagrodzenie 2026 (od stycznia) */
+export const MINIMUM_WAGE = 4806;
 
 // ===========================================
 // ZUS - SKŁADKI SPOŁECZNE
@@ -35,10 +35,10 @@ export const ZUS_RATES = {
 } as const;
 
 /** Podstawa wymiaru - pełny ZUS (60% prognozowanego przeciętnego) */
-export const FULL_ZUS_BASE = PROJECTED_AVERAGE_WAGE * 0.6; // ~5203.80 PLN
+export const FULL_ZUS_BASE = PROJECTED_AVERAGE_WAGE * 0.6; // ~5652 PLN
 
 /** Podstawa wymiaru - preferencyjny ZUS (30% minimalnego) */
-export const PREFERENTIAL_ZUS_BASE = MINIMUM_WAGE * 0.3; // ~1399.80 PLN
+export const PREFERENTIAL_ZUS_BASE = MINIMUM_WAGE * 0.3; // ~1441.80 PLN
 
 /** Mały ZUS Plus - maksymalna podstawa (60% prognozowanego) */
 export const SMALL_ZUS_PLUS_MAX_BASE = PROJECTED_AVERAGE_WAGE * 0.6;
@@ -60,16 +60,16 @@ export const HEALTH_RATE_SCALE = 0.09;
 export const HEALTH_RATE_LINEAR = 0.049;
 
 /** Minimalna składka zdrowotna (9% minimalnego wynagrodzenia) */
-export const HEALTH_MIN = MINIMUM_WAGE * 0.09; // ~419.94 PLN
+export const HEALTH_MIN = MINIMUM_WAGE * 0.09; // ~432.54 PLN
 
 /** Składka zdrowotna ryczałt - progi przychodowe */
 export const HEALTH_RYCZALT_THRESHOLDS = {
   /** Do 60 000 PLN przychodu rocznie */
-  tier1: { maxRevenue: 60000, monthlyAmount: 461.66 },
+  tier1: { maxRevenue: 60000, monthlyAmount: 498.35 },
   /** 60 001 - 300 000 PLN przychodu rocznie */
-  tier2: { maxRevenue: 300000, monthlyAmount: 769.43 },
+  tier2: { maxRevenue: 300000, monthlyAmount: 830.58 },
   /** Powyżej 300 000 PLN przychodu rocznie */
-  tier3: { maxRevenue: Infinity, monthlyAmount: 1384.97 },
+  tier3: { maxRevenue: Infinity, monthlyAmount: 1495.04 },
 } as const;
 
 // ===========================================

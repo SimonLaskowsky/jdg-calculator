@@ -6,14 +6,14 @@ const siteUrl = 'https://jdg-kalkulator.pl'; // Update with your actual domain
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Kalkulator ZUS i PIT 2025 | JDG, Sp. z o.o., B2B vs Etat',
-    template: '%s | Kalkulator ZUS i PIT 2025',
+    default: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
+    template: '%s | Kalkulator ZUS i PIT 2026',
   },
   description:
-    'Bezpłatny kalkulator ZUS i PIT na 2025 rok. Porównaj JDG (skala, liniowy, ryczałt) ze sp. z o.o. Sprawdź B2B vs etat. Oblicz ile zarobisz na rękę i która forma opodatkowania jest najlepsza.',
+    'Bezpłatny kalkulator ZUS i PIT na 2026 rok. Porównaj JDG (skala, liniowy, ryczałt) ze sp. z o.o. Sprawdź B2B vs etat. Oblicz ile zarobisz na rękę i która forma opodatkowania jest najlepsza.',
   keywords: [
-    'kalkulator ZUS 2025',
-    'kalkulator PIT 2025',
+    'kalkulator ZUS 2026',
+    'kalkulator PIT 2026',
     'kalkulator B2B',
     'B2B vs etat',
     'B2B czy umowa o pracę',
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     'podatek liniowy',
     'ryczałt dla programisty',
     'ryczałt 12%',
-    'składka zdrowotna 2025',
-    'mały ZUS plus 2025',
+    'składka zdrowotna 2026',
+    'mały ZUS plus 2026',
     'ulga na start',
     'IP Box kalkulator',
     'sp. z o.o. kalkulator',
@@ -53,24 +53,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pl_PL',
     url: siteUrl,
-    siteName: 'Kalkulator ZUS i PIT 2025',
-    title: 'Kalkulator ZUS i PIT 2025 | JDG, Sp. z o.o., B2B vs Etat',
+    siteName: 'Kalkulator ZUS i PIT 2026',
+    title: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
     description:
-      'Porównaj formy opodatkowania JDG, sp. z o.o. i B2B vs etat. Sprawdź ile zarobisz na rękę w 2025 roku.',
+      'Porównaj formy opodatkowania JDG, sp. z o.o. i B2B vs etat. Sprawdź ile zarobisz na rękę w 2026 roku.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Kalkulator ZUS i PIT 2025',
+        alt: 'Kalkulator ZUS i PIT 2026',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kalkulator ZUS i PIT 2025 | JDG, Sp. z o.o., B2B vs Etat',
+    title: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
     description:
-      'Porównaj formy opodatkowania i sprawdź ile zarobisz na rękę w 2025 roku.',
+      'Porównaj formy opodatkowania i sprawdź ile zarobisz na rękę w 2026 roku.',
     images: ['/og-image.png'],
   },
   alternates: {
@@ -86,7 +86,7 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       '@id': `${siteUrl}/#webapp`,
-      name: 'Kalkulator ZUS i PIT 2025',
+      name: 'Kalkulator ZUS i PIT 2026',
       description:
         'Bezpłatny kalkulator do porównania form opodatkowania JDG, sp. z o.o. oraz B2B vs etat.',
       url: siteUrl,
@@ -117,7 +117,7 @@ const jsonLd = {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
       url: siteUrl,
-      name: 'Kalkulator ZUS i PIT 2025',
+      name: 'Kalkulator ZUS i PIT 2026',
       publisher: {
         '@id': `${siteUrl}/#organization`,
       },

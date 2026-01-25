@@ -222,7 +222,7 @@ export default function Home() {
         {/* Header */}
         <header className="text-center mb-12">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full glass text-sm text-gray-300">
-            Aktualne stawki na 2025 rok
+            Aktualne stawki na 2026 rok
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="gradient-text">Kalkulator ZUS i PIT</span>
@@ -611,7 +611,7 @@ export default function Home() {
 
         {/* SEO Content Section */}
         <section className="mt-16 glass rounded-2xl p-8" id="poradnik">
-          <h2 className="text-xl font-bold text-white mb-6">Jak wybrać formę opodatkowania w 2025?</h2>
+          <h2 className="text-xl font-bold text-white mb-6">Jak wybrać formę opodatkowania w 2026?</h2>
           <div className="grid md:grid-cols-3 gap-6 text-sm text-gray-300">
             <article>
               <h3 className="font-semibold text-white mb-2">📊 Skala podatkowa</h3>
@@ -641,7 +641,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t border-white/10 text-center">
           <div className="glass rounded-2xl p-6 inline-block">
-            <p className="text-gray-400 mb-1">Kalkulator ZUS i PIT 2025</p>
+            <p className="text-gray-400 mb-1">Kalkulator ZUS i PIT 2026</p>
             <p className="text-xs text-gray-500">Obliczenia mają charakter poglądowy i nie stanowią porady podatkowej.</p>
           </div>
           <nav className="mt-6 flex justify-center gap-6 text-sm text-gray-500">
@@ -680,8 +680,8 @@ const faqData = [
     answer: 'Zależy od wysokości dochodów i kosztów. Ryczałt (12% dla IT) jest najczęściej korzystniejszy dla programistów i freelancerów z niskimi kosztami. Skala podatkowa opłaca się przy niższych dochodach (do ~8 tys. zł/mc) lub wysokich kosztach uzyskania przychodu. Użyj naszego kalkulatora, aby porównać obie opcje dla Twojej sytuacji.',
   },
   {
-    question: 'Ile wynosi ZUS dla JDG w 2025 roku?',
-    answer: 'Pełny ZUS w 2025 roku wynosi około 1 774 zł miesięcznie (składki społeczne + zdrowotna). Preferencyjny ZUS (pierwsze 24 miesiące) to około 600 zł. Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych - płacisz tylko zdrowotną.',
+    question: 'Ile wynosi ZUS dla JDG w 2026 roku?',
+    answer: 'Pełny ZUS w 2026 roku wynosi około 1 774 zł miesięcznie (składki społeczne + zdrowotna). Preferencyjny ZUS (pierwsze 24 miesiące) to około 600 zł. Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych - płacisz tylko zdrowotną.',
   },
   {
     question: 'Kiedy opłaca się założyć sp. z o.o. zamiast JDG?',
@@ -704,7 +704,7 @@ const faqData = [
     answer: 'Programiści najczęściej płacą ryczałt 12% od przychodu. Ta stawka obejmuje usługi IT, programowanie, doradztwo techniczne. Niektóre usługi mogą kwalifikować się do 8,5% (np. usługi dla firm). Sprawdź klasyfikację PKWiU swojej działalności.',
   },
   {
-    question: 'Ile wynosi składka zdrowotna w 2025?',
+    question: 'Ile wynosi składka zdrowotna w 2026?',
     answer: 'Składka zdrowotna zależy od formy opodatkowania: Skala podatkowa - 9% dochodu (min. ~420 zł). Podatek liniowy - 4,9% dochodu (min. ~420 zł). Ryczałt - stała kwota zależna od przychodu: do 60 tys. zł/rok (~462 zł/mc), 60-300 tys. zł (~769 zł/mc), powyżej 300 tys. zł (~1 385 zł/mc).',
   },
 ];
@@ -715,7 +715,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
     <details className="glass-card rounded-xl p-4 group cursor-pointer h-fit">
       <summary className="font-semibold text-white flex items-center justify-between list-none">
         <span className="pr-4">{question}</span>
-        <span className="text-gray-500 group-open:rotate-180 transition-transform">▼</span>
+        <span className="text-gray-500 group-open:rotate-180 transition-transform">↓</span>
       </summary>
       <p className="mt-3 text-gray-400 text-sm leading-relaxed">{answer}</p>
     </details>

@@ -1,4 +1,4 @@
-# Kalkulator ZUS i PIT 2025
+# Kalkulator ZUS i PIT 2026
 
 Kompleksowy kalkulator podatkowy dla polskich freelancerów i przedsiębiorców. Porównaj wszystkie formy opodatkowania JDG, sp. z o.o. oraz B2B vs etat - znajdź najlepszą opcję dla siebie.
 
@@ -76,12 +76,12 @@ src/
 │   ├── layout.tsx        # SEO meta tags
 │   └── page.tsx          # Główna strona (formularze, wyniki, wykresy)
 └── lib/
-    ├── constants.ts      # Stawki ZUS/PIT/CIT 2025
+    ├── constants.ts      # Stawki ZUS/PIT/CIT 2026
     ├── calculations.ts   # Obliczenia JDG
     └── calculations-spzoo.ts  # Obliczenia sp. z o.o.
 ```
 
-## Stawki 2025
+## Stawki 2026
 
 | Parametr | Wartość |
 |----------|---------|
