@@ -230,6 +230,10 @@ export function calculateScale(input: CalculationInput): YearlyResult {
   const monthlyBurden = monthlyZusSocial + monthlyHealth + monthlyTax;
   const yearlyBurden = yearlyZusSocial + yearlyHealth + yearlyTax;
 
+  // Net amount = revenue - costs - all taxes/ZUS
+  const monthlyNetAmount = input.monthlyRevenue - input.monthlyCosts - monthlyBurden;
+  const yearlyNetAmount = yearlyRevenue - yearlyCosts - yearlyBurden;
+
   return {
     taxForm: 'scale',
     monthly: {
@@ -237,7 +241,7 @@ export function calculateScale(input: CalculationInput): YearlyResult {
       zusHealth: Math.round(monthlyHealth * 100) / 100,
       taxAdvance: Math.round(monthlyTax * 100) / 100,
       totalBurden: Math.round(monthlyBurden * 100) / 100,
-      netAmount: Math.round((input.monthlyRevenue - monthlyBurden) * 100) / 100,
+      netAmount: Math.round(monthlyNetAmount * 100) / 100,
     },
     yearly: {
       revenue: yearlyRevenue,
@@ -247,7 +251,7 @@ export function calculateScale(input: CalculationInput): YearlyResult {
       zusHealth: Math.round(yearlyHealth * 100) / 100,
       tax: Math.round(yearlyTax * 100) / 100,
       totalBurden: Math.round(yearlyBurden * 100) / 100,
-      netAmount: Math.round((yearlyRevenue - yearlyBurden) * 100) / 100,
+      netAmount: Math.round(yearlyNetAmount * 100) / 100,
     },
     effectiveRate: yearlyRevenue > 0 ? yearlyBurden / yearlyRevenue : 0,
   };
@@ -292,6 +296,10 @@ export function calculateLinear(input: CalculationInput): YearlyResult {
   const monthlyBurden = monthlyZusSocial + monthlyHealth + monthlyTax;
   const yearlyBurden = yearlyZusSocial + yearlyHealth + yearlyTax;
 
+  // Net amount = revenue - costs - all taxes/ZUS
+  const monthlyNetAmount = input.monthlyRevenue - input.monthlyCosts - monthlyBurden;
+  const yearlyNetAmount = yearlyRevenue - yearlyCosts - yearlyBurden;
+
   return {
     taxForm: 'linear',
     monthly: {
@@ -299,7 +307,7 @@ export function calculateLinear(input: CalculationInput): YearlyResult {
       zusHealth: Math.round(monthlyHealth * 100) / 100,
       taxAdvance: Math.round(monthlyTax * 100) / 100,
       totalBurden: Math.round(monthlyBurden * 100) / 100,
-      netAmount: Math.round((input.monthlyRevenue - monthlyBurden) * 100) / 100,
+      netAmount: Math.round(monthlyNetAmount * 100) / 100,
     },
     yearly: {
       revenue: yearlyRevenue,
@@ -309,7 +317,7 @@ export function calculateLinear(input: CalculationInput): YearlyResult {
       zusHealth: Math.round(yearlyHealth * 100) / 100,
       tax: Math.round(yearlyTax * 100) / 100,
       totalBurden: Math.round(yearlyBurden * 100) / 100,
-      netAmount: Math.round((yearlyRevenue - yearlyBurden) * 100) / 100,
+      netAmount: Math.round(yearlyNetAmount * 100) / 100,
     },
     effectiveRate: yearlyRevenue > 0 ? yearlyBurden / yearlyRevenue : 0,
   };
@@ -345,6 +353,13 @@ export function calculateRyczalt(input: CalculationInput): YearlyResult {
   const monthlyBurden = monthlyZusSocial + monthlyHealth + monthlyTax;
   const yearlyBurden = yearlyZusSocial + yearlyHealth + yearlyTax;
 
+  // Net amount = revenue - actual costs - all taxes/ZUS
+  // Note: costs don't reduce ryczałt tax, but they're still real expenses
+  const actualMonthlyCosts = input.monthlyCosts;
+  const actualYearlyCosts = input.monthlyCosts * 12;
+  const monthlyNetAmount = input.monthlyRevenue - actualMonthlyCosts - monthlyBurden;
+  const yearlyNetAmount = yearlyRevenue - actualYearlyCosts - yearlyBurden;
+
   return {
     taxForm: 'ryczalt',
     monthly: {
@@ -352,17 +367,17 @@ export function calculateRyczalt(input: CalculationInput): YearlyResult {
       zusHealth: Math.round(monthlyHealth * 100) / 100,
       taxAdvance: Math.round(monthlyTax * 100) / 100,
       totalBurden: Math.round(monthlyBurden * 100) / 100,
-      netAmount: Math.round((input.monthlyRevenue - monthlyBurden) * 100) / 100,
+      netAmount: Math.round(monthlyNetAmount * 100) / 100,
     },
     yearly: {
       revenue: yearlyRevenue,
-      costs: yearlyCosts,
-      income: yearlyRevenue, // Dla ryczałtu dochód = przychód
+      costs: actualYearlyCosts, // Show actual costs for clarity
+      income: yearlyRevenue, // Dla ryczałtu dochód = przychód (for tax purposes)
       zusSocial: Math.round(yearlyZusSocial * 100) / 100,
       zusHealth: Math.round(yearlyHealth * 100) / 100,
       tax: Math.round(yearlyTax * 100) / 100,
       totalBurden: Math.round(yearlyBurden * 100) / 100,
-      netAmount: Math.round((yearlyRevenue - yearlyBurden) * 100) / 100,
+      netAmount: Math.round(yearlyNetAmount * 100) / 100,
     },
     effectiveRate: yearlyRevenue > 0 ? yearlyBurden / yearlyRevenue : 0,
   };

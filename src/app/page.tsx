@@ -523,7 +523,7 @@ export default function Home() {
           {/* JDG Results */}
           {activeTab === 'jdg' && jdgResults && (
             <div className="space-y-6">
-              <JdgResultsView results={jdgResults} ryczaltRate={ryczaltRate} monthlyCosts={monthlyCosts} formatCurrency={formatCurrency} formatPercent={formatPercent} getBestOption={getBestJdgOption} />
+              <JdgResultsView results={jdgResults} ryczaltRate={ryczaltRate} formatCurrency={formatCurrency} formatPercent={formatPercent} getBestOption={getBestJdgOption} />
 
               {/* Chart */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
@@ -783,14 +783,12 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 function JdgResultsView({
   results,
   ryczaltRate,
-  monthlyCosts,
   formatCurrency,
   formatPercent,
   getBestOption,
 }: {
   results: ExtendedJdgResults;
   ryczaltRate: number;
-  monthlyCosts: number;
   formatCurrency: (v: number) => string;
   formatPercent: (v: number) => string;
   getBestOption: (r: ExtendedJdgResults) => { key: string; label: string; net: number };
@@ -833,7 +831,6 @@ function JdgResultsView({
             }}
             yearly={{ net: data.yearly.netAmount, burden: data.yearly.totalBurden }}
             effectiveRate={data.effectiveRate}
-            monthlyCosts={monthlyCosts}
             formatCurrency={formatCurrency}
             formatPercent={formatPercent}
           />
@@ -1156,7 +1153,6 @@ function ResultCard({
   monthly,
   yearly,
   effectiveRate,
-  monthlyCosts,
   formatCurrency,
   formatPercent,
 }: {
@@ -1165,12 +1161,9 @@ function ResultCard({
   monthly: { zusSocial: number; zusHealth: number; tax: number; total: number; net: number };
   yearly: { net: number; burden: number };
   effectiveRate: number;
-  monthlyCosts: number;
   formatCurrency: (v: number) => string;
   formatPercent: (v: number) => string;
 }) {
-  const netAfterCosts = monthly.net - monthlyCosts;
-  const yearlyNetAfterCosts = yearly.net - monthlyCosts * 12;
   return (
     <div className={`glass-card rounded-2xl p-6 ${
       isBest ? 'glow-green border-green-500/50' : ''
@@ -1206,43 +1199,15 @@ function ResultCard({
           <p className="text-xs text-gray-500 mb-1">Suma obciążeń</p>
           <p className="font-semibold text-red-400">{formatCurrency(monthly.total)}/mc</p>
         </div>
-        <div className="relative group">
-          <p className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-            Na rękę
-            <span className="cursor-help text-gray-400 hover:text-gray-300">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-              </svg>
-            </span>
-          </p>
+        <div>
+          <p className="text-xs text-gray-500 mb-1">Na rękę</p>
           <p className="font-bold text-green-400 text-lg">{formatCurrency(monthly.net)}/mc</p>
-          {/* Tooltip */}
-          <div className="absolute bottom-full left-0 mb-2 hidden group-hover:block z-50 w-64">
-            <div className="glass rounded-lg p-3 text-xs shadow-xl border border-white/10">
-              <p className="text-gray-300 mb-2">
-                Koszty operacyjne obniżają podatek, ale nie są odejmowane od kwoty &quot;na rękę&quot; - to pieniądze już wydane na prowadzenie firmy.
-              </p>
-              {monthlyCosts > 0 && (
-                <div className="pt-2 border-t border-white/10">
-                  <p className="text-gray-400">Po odjęciu kosztów ({formatCurrency(monthlyCosts)}/mc):</p>
-                  <p className="text-white font-semibold">{formatCurrency(netAfterCosts)}/mc</p>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       </div>
 
       <div className="pt-4 border-t border-white/10 flex justify-between text-sm">
         <span className="text-gray-500">Rocznie na rękę:</span>
-        <div className="text-right">
-          <span className="font-bold text-green-400">{formatCurrency(yearly.net)}</span>
-          {monthlyCosts > 0 && (
-            <p className="text-xs text-gray-500 mt-0.5">
-              (po kosztach: {formatCurrency(yearlyNetAfterCosts)})
-            </p>
-          )}
-        </div>
+        <span className="font-bold text-green-400">{formatCurrency(yearly.net)}</span>
       </div>
     </div>
   );
