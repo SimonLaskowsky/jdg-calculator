@@ -9,12 +9,14 @@ const siteUrl = 'https://ilezostanie.com/';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
-    template: '%s | Kalkulator ZUS i PIT 2026',
+    default: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
+    template: '%s | Ile Zostanie?',
   },
   description:
-    'Darmowy kalkulator ZUS i PIT 2026. Porównaj JDG (skala, liniowy, ryczałt) ze spółką z o.o. i etatem. Oblicz kwotę netto i znajdź najkorzystniejszą formę.',
+    'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Darmowy kalkulator 2026 - porównaj JDG, sp. z o.o. i B2B vs etat.',
   keywords: [
+    'ile zostanie na rękę',
+    'ile zostanie po podatkach',
     'kalkulator ZUS 2026',
     'kalkulator PIT 2026',
     'kalkulator B2B',
@@ -38,9 +40,9 @@ export const metadata: Metadata = {
     'kalkulator dla freelancera',
     'kalkulator dla programisty',
   ],
-  authors: [{ name: 'JDG Kalkulator' }],
-  creator: 'JDG Kalkulator',
-  publisher: 'JDG Kalkulator',
+  authors: [{ name: 'Ile Zostanie' }],
+  creator: 'Ile Zostanie',
+  publisher: 'Ile Zostanie',
   robots: {
     index: true,
     follow: true,
@@ -56,24 +58,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pl_PL',
     url: siteUrl,
-    siteName: 'Kalkulator ZUS i PIT 2026',
-    title: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
+    siteName: 'Ile Zostanie?',
+    title: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
     description:
-      'Porównaj formy opodatkowania JDG, sp. z o.o. i B2B vs etat. Sprawdź ile zarobisz na rękę w 2026 roku.',
+      'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Porównaj JDG, sp. z o.o. i B2B vs etat.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Kalkulator ZUS i PIT 2026',
+        alt: 'Ile Zostanie - Kalkulator ZUS i PIT 2026',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
+    title: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
     description:
-      'Porównaj formy opodatkowania i sprawdź ile zarobisz na rękę w 2026 roku.',
+      'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach w 2026 roku.',
     images: ['/og-image.png'],
   },
   alternates: {
@@ -89,9 +91,9 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       '@id': `${siteUrl}/#webapp`,
-      name: 'Kalkulator ZUS i PIT 2026',
+      name: 'Ile Zostanie? - Kalkulator ZUS i PIT',
       description:
-        'Bezpłatny kalkulator do porównania form opodatkowania JDG, sp. z o.o. oraz B2B vs etat.',
+        'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Porównaj JDG, sp. z o.o. oraz B2B vs etat.',
       url: siteUrl,
       applicationCategory: 'FinanceApplication',
       operatingSystem: 'Any',
@@ -101,6 +103,7 @@ const jsonLd = {
         priceCurrency: 'PLN',
       },
       featureList: [
+        'Oblicz ile zostanie na rękę',
         'Kalkulator JDG (skala, liniowy, ryczałt)',
         'Kalkulator sp. z o.o.',
         'Porównanie JDG vs sp. z o.o.',
@@ -112,7 +115,7 @@ const jsonLd = {
     {
       '@type': 'Organization',
       '@id': `${siteUrl}/#organization`,
-      name: 'JDG Kalkulator',
+      name: 'Ile Zostanie',
       url: siteUrl,
       logo: `${siteUrl}/logo.png`,
     },
@@ -120,7 +123,7 @@ const jsonLd = {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
       url: siteUrl,
-      name: 'Kalkulator ZUS i PIT 2026',
+      name: 'Ile Zostanie?',
       publisher: {
         '@id': `${siteUrl}/#organization`,
       },

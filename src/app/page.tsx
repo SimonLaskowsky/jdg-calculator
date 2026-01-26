@@ -225,10 +225,10 @@ export default function Home() {
             Aktualne stawki na 2026 rok
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text">Kalkulator ZUS i PIT</span>
+            <span className="gradient-text">Ile zostanie?</span>
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Porównaj JDG i sp. z o.o. - znajdź najlepszą formę dla swojej działalności
+            Sprawdź ile pieniędzy zostaje Ci na rękę po ZUS i podatkach
           </p>
         </header>
 
@@ -611,7 +611,7 @@ export default function Home() {
 
         {/* SEO Content Section */}
         <section className="mt-16 glass rounded-2xl p-8" id="poradnik">
-          <h2 className="text-xl font-bold text-white mb-6">Jak wybrać formę opodatkowania w 2026?</h2>
+          <h2 className="text-xl font-bold text-white mb-6">Ile zostanie na rękę? Poradnik 2026</h2>
           <div className="grid md:grid-cols-3 gap-6 text-sm text-gray-300">
             <article>
               <h3 className="font-semibold text-white mb-2">📊 Skala podatkowa</h3>
@@ -692,7 +692,7 @@ export default function Home() {
 
             {/* Center info */}
             <div className="text-center">
-              <p className="text-gray-400 text-sm">Kalkulator ZUS i PIT 2026</p>
+              <p className="text-gray-400 text-sm font-medium">ilezostanie.com</p>
               <p className="text-xs text-gray-500">Obliczenia mają charakter poglądowy i nie stanowią porady podatkowej.</p>
             </div>
 
