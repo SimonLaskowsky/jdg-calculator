@@ -731,19 +731,19 @@ export default function Home() {
 const faqData = [
   {
     question: 'Ryczałt czy skala podatkowa - co się bardziej opłaca?',
-    answer: 'Zależy od wysokości dochodów i kosztów. Ryczałt (12% dla IT) jest najczęściej korzystniejszy dla programistów i freelancerów z niskimi kosztami. Skala podatkowa opłaca się przy niższych dochodach (do ~8 tys. zł/mc) lub wysokich kosztach uzyskania przychodu. Użyj naszego kalkulatora, aby porównać obie opcje dla Twojej sytuacji.',
+    answer: 'Zależy od wysokości dochodów i kosztów. Ryczałt (12% dla IT) jest najczęściej korzystniejszy dla programistów i freelancerów z niskimi kosztami. Skala podatkowa opłaca się przy niższych dochodach (do ~10 tys. zł/mc) lub wysokich kosztach uzyskania przychodu. Użyj naszego kalkulatora, aby porównać obie opcje dla Twojej sytuacji.',
   },
   {
     question: 'Ile wynosi ZUS dla JDG w 2026 roku?',
-    answer: 'Pełny ZUS w 2026 roku wynosi około 1 774 zł miesięcznie (składki społeczne + zdrowotna). Preferencyjny ZUS (pierwsze 24 miesiące) to około 600 zł. Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych - płacisz tylko zdrowotną.',
+    answer: 'Pełny ZUS społeczny w 2026 roku wynosi około 1927 zł miesięcznie (bez zdrowotnej). Składka zdrowotna jest osobno. Preferencyjny ZUS (pierwsze 24 miesiące) to około 456 zł (społeczne). Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych – płacisz tylko zdrowotną.',
   },
   {
     question: 'Kiedy opłaca się założyć sp. z o.o. zamiast JDG?',
-    answer: 'Sp. z o.o. zaczyna się opłacać przy przychodach powyżej 15-20 tys. zł miesięcznie. Główne zalety to CIT 9% (mały podatnik), ograniczona odpowiedzialność i prestiż. Wady to podwójne opodatkowanie (CIT + dywidenda), droga księgowość (~800 zł/mc) i więcej formalności.',
+    answer: 'Sp. z o.o. zaczyna się opłacać przy przychodach powyżej 15–20 tys. zł miesięcznie. Główne zalety to CIT 9% (mały podatnik), ograniczona odpowiedzialność i prestiż. Wady to podwójne opodatkowanie (CIT + dywidenda), droga księgowość (~800 zł/mc) i więcej formalności.',
   },
   {
     question: 'B2B czy umowa o pracę - co wybrać?',
-    answer: 'B2B daje wyższe zarobki netto, ale brak płatnego urlopu, L4 i stabilności. Opłaca się gdy stawka B2B jest wyższa o ~20-30% od brutto na etacie. Na etacie masz 26 dni urlopu (warte ~10% rocznej pensji) i pełne ubezpieczenie chorobowe.',
+    answer: 'B2B daje wyższe zarobki netto, ale brak płatnego urlopu, L4 i stabilności. Opłaca się gdy stawka B2B jest wyższa o ~20–30% od brutto na etacie. Na etacie masz 26 dni urlopu (warte ~10% rocznej pensji) i pełne ubezpieczenie chorobowe.',
   },
   {
     question: 'Co to jest IP Box i dla kogo?',
@@ -751,7 +751,7 @@ const faqData = [
   },
   {
     question: 'Jak działa ulga na start dla nowych firm?',
-    answer: 'Ulga na start zwalnia z opłacania składek społecznych ZUS przez pierwsze 6 miesięcy działalności. Płacisz tylko składkę zdrowotną (~420 zł dla minimalnej podstawy). Po 6 miesiącach możesz przejść na preferencyjny ZUS (kolejne 24 miesiące ze zniżką).',
+    answer: 'Ulga na start zwalnia z opłacania składek społecznych ZUS przez pierwsze 6 miesięcy działalności. Płacisz tylko składkę zdrowotną (min. ~433 zł). Po 6 miesiącach możesz przejść na preferencyjny ZUS (kolejne 24 miesiące ze zniżką).',
   },
   {
     question: 'Jaka stawka ryczałtu dla programisty?',
@@ -759,7 +759,7 @@ const faqData = [
   },
   {
     question: 'Ile wynosi składka zdrowotna w 2026?',
-    answer: 'Składka zdrowotna zależy od formy opodatkowania: Skala podatkowa - 9% dochodu (min. ~420 zł). Podatek liniowy - 4,9% dochodu (min. ~420 zł). Ryczałt - stała kwota zależna od przychodu: do 60 tys. zł/rok (~462 zł/mc), 60-300 tys. zł (~769 zł/mc), powyżej 300 tys. zł (~1 385 zł/mc).',
+    answer: 'Składka zdrowotna zależy od formy opodatkowania: Skala podatkowa – 9% dochodu (min. ~433 zł). Podatek liniowy – 4,9% dochodu (min. ~433 zł). Ryczałt – stała kwota zależna od przychodu: do 60 tys. zł/rok (~498 zł/mc), 60–300 tys. zł (~831 zł/mc), powyżej 300 tys. zł (~1495 zł/mc).',
   },
 ];
 
