@@ -645,7 +645,7 @@ export default function Home() {
             Jeśli ten darmowy kalkulator pomógł Ci w podjęciu decyzji, rozważ wsparcie jego rozwoju.
           </p>
           <a
-            href="https://buymeacoffee.com/simonlaskowsky"
+            href="https://suppi.pl/simonlaskowski"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold rounded-xl hover:from-yellow-400 hover:to-orange-400 transition-all hover:scale-105 shadow-lg hover:shadow-orange-500/25"
