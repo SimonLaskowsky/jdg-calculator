@@ -11,6 +11,7 @@ import {
   SMALL_ZUS_PLUS_MAX_BASE,
   HEALTH_RATE_SCALE,
   HEALTH_RATE_LINEAR,
+  HEALTH_DEDUCTION_LIMIT_LINEAR,
   HEALTH_MIN,
   HEALTH_RYCZALT_THRESHOLDS,
   TAX_FREE_AMOUNT,
@@ -286,10 +287,14 @@ export function calculateLinear(input: CalculationInput): YearlyResult {
   const monthlyHealth = calculateHealthLinear(Math.max(0, monthlyIncomeAfterZus));
   const yearlyHealth = monthlyHealth * 12;
 
+  // Odliczenie składki zdrowotnej od dochodu (liniowy - limit roczny)
+  const healthDeduction = Math.min(yearlyHealth, HEALTH_DEDUCTION_LIMIT_LINEAR);
+  const taxableIncome = Math.max(0, incomeAfterZus - healthDeduction);
+
   // Podatek - IP Box (5%) lub liniowy (19%)
   const yearlyTax = input.useIpBox
-    ? calculateTaxIpBox(Math.max(0, incomeAfterZus))
-    : calculateTaxLinear(Math.max(0, incomeAfterZus));
+    ? calculateTaxIpBox(taxableIncome)
+    : calculateTaxLinear(taxableIncome);
   const monthlyTax = yearlyTax / 12;
 
   // Sumy
@@ -345,8 +350,13 @@ export function calculateRyczalt(input: CalculationInput): YearlyResult {
   const monthlyHealth = calculateHealthRyczalt(yearlyRevenue);
   const yearlyHealth = monthlyHealth * 12;
 
-  // Podatek ryczałtowy
-  const yearlyTax = calculateTaxRyczalt(yearlyRevenue, ryczaltRate);
+  // Odliczenie ZUS społecznego i 50% zdrowotnej od przychodu przed podatkiem
+  const zusSocialDeduction = yearlyZusSocial;
+  const healthDeduction = yearlyHealth * 0.5;
+  const taxBase = Math.max(0, yearlyRevenue - zusSocialDeduction - healthDeduction);
+
+  // Podatek ryczałtowy (od podstawy po odliczeniach)
+  const yearlyTax = calculateTaxRyczalt(taxBase, ryczaltRate);
   const monthlyTax = yearlyTax / 12;
 
   // Sumy

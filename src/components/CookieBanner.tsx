@@ -16,18 +16,6 @@ export function CookieBanner() {
     }
   }, []);
 
-  // Lock scroll when banner is visible
-  useEffect(() => {
-    if (showBanner) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [showBanner]);
-
   // Remove fade-in class after it plays once, and clean up shake class on animation end
   useEffect(() => {
     const el = bannerRef.current;
@@ -74,7 +62,7 @@ export function CookieBanner() {
     <>
       {/* Full-screen overlay that blocks all interaction */}
       <div
-        className="fixed inset-0 z-40 cursor-not-allowed"
+        className="fixed inset-0 z-40 cursor-not-allowed overflow-auto"
         onClick={triggerShake}
         onTouchStart={triggerShake}
       />

@@ -15,6 +15,9 @@ import {
   TAX_THRESHOLD,
   TAX_SCALE_RATES,
   MINIMUM_WAGE,
+  FULL_ZUS_BASE,
+  ZUS_RATES,
+  HEALTH_MIN,
   type CitRate,
   type SpzooCalculationInput,
   type SpzooMonthlyBreakdown,
@@ -24,6 +27,27 @@ import {
 // ===========================================
 // FUNKCJE POMOCNICZE
 // ===========================================
+
+/**
+ * Oblicza obowiązkowe składki ZUS jednoosobowego wspólnika sp. z o.o.
+ * Jednoosobowy wspólnik jest traktowany jak osoba prowadząca działalność
+ * i musi opłacać pełne składki społeczne + zdrowotną niezależnie od formy wypłaty.
+ */
+function calculateOwnerMandatoryZus(): number {
+  // Składki społeczne na podstawie 60% prognozowanego przeciętnego wynagrodzenia
+  const social =
+    FULL_ZUS_BASE * ZUS_RATES.pension +
+    FULL_ZUS_BASE * ZUS_RATES.disability +
+    FULL_ZUS_BASE * ZUS_RATES.sickness +
+    FULL_ZUS_BASE * ZUS_RATES.accident +
+    FULL_ZUS_BASE * ZUS_RATES.laborFund;
+
+  // Składka zdrowotna - minimum (9% minimalnego wynagrodzenia)
+  // Wspólnik na samej dywidendzie nie ma dochodu z działalności, więc płaci minimum
+  const health = HEALTH_MIN;
+
+  return Math.round((social + health) * 100) / 100;
+}
 
 /**
  * Oblicza składki ZUS pracownika (część pracownika)
@@ -153,6 +177,12 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
   // Dywidenda netto
   const netDividend = Math.max(0, profitAfterTax - dividendTax);
 
+  // Obowiązkowy ZUS wspólnika jednoosobowej sp. z o.o.
+  const ownerMandatoryZus = calculateOwnerMandatoryZus();
+
+  // Właściciel na rękę = dywidenda netto - obowiązkowy ZUS
+  const ownerTotalNet = Math.max(0, netDividend - ownerMandatoryZus);
+
   const monthly: SpzooMonthlyBreakdown = {
     companyRevenue: monthlyRevenue,
     operatingCosts: monthlyOperatingCosts,
@@ -163,11 +193,12 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
     dividendTax,
     ownerNetSalary: 0,
     ownerNetDividend: netDividend,
-    ownerTotalNet: netDividend,
+    ownerTotalNet,
+    ownerMandatoryZus,
     accountingCost,
   };
 
-  const totalTaxBurden = (cit + dividendTax + accountingCost) * 12;
+  const totalTaxBurden = (cit + dividendTax + ownerMandatoryZus + accountingCost) * 12;
 
   return {
     payoutMethod: 'dividend',
@@ -183,7 +214,8 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
       dividendTax: dividendTax * 12,
       ownerNetSalary: 0,
       ownerNetDividend: netDividend * 12,
-      ownerTotalNet: netDividend * 12,
+      ownerTotalNet: ownerTotalNet * 12,
+      ownerMandatoryZus: ownerMandatoryZus * 12,
       accountingCost: accountingCost * 12,
       totalTaxBurden,
     },
@@ -234,6 +266,7 @@ export function calculateMinSalaryPlusDividend(input: SpzooCalculationInput): Sp
     ownerNetSalary: netSalary,
     ownerNetDividend: Math.max(0, netDividend),
     ownerTotalNet: Math.max(0, totalNet),
+    ownerMandatoryZus: 0, // ZUS opłacany przez pensję
     accountingCost,
   };
 
@@ -260,6 +293,7 @@ export function calculateMinSalaryPlusDividend(input: SpzooCalculationInput): Sp
       ownerNetSalary: netSalary * 12,
       ownerNetDividend: Math.max(0, netDividend * 12),
       ownerTotalNet: Math.max(0, totalNet * 12),
+      ownerMandatoryZus: 0,
       accountingCost: accountingCost * 12,
       totalTaxBurden,
     },
@@ -305,6 +339,7 @@ export function calculateFullSalary(input: SpzooCalculationInput): SpzooYearlyRe
     ownerNetSalary: netSalary,
     ownerNetDividend: 0,
     ownerTotalNet: netSalary,
+    ownerMandatoryZus: 0, // ZUS opłacany przez pensję
     accountingCost,
   };
 
@@ -330,6 +365,7 @@ export function calculateFullSalary(input: SpzooCalculationInput): SpzooYearlyRe
       ownerNetSalary: netSalary * 12,
       ownerNetDividend: 0,
       ownerTotalNet: netSalary * 12,
+      ownerMandatoryZus: 0,
       accountingCost: accountingCost * 12,
       totalTaxBurden,
     },

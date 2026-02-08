@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { compareAllForms, calculateLinear, type ComparisonResult } from '@/lib/calculations';
 import { compareSpzooScenarios, findSpzooThreshold, type SpzooComparisonResult } from '@/lib/calculations-spzoo';
 import { RYCZALT_RATES, type ZusType, type YearlyResult, type CitRate } from '@/lib/constants';
@@ -148,6 +148,10 @@ export default function Home() {
   const b2bVsUopData = useMemo(() => {
     const uopNet = calculateUopNet(uopGross);
 
+    // Koszt pracodawcy = brutto + ZUS pracodawcy (~20.48%)
+    const employerZusRate = 0.0976 + 0.065 + 0.0167 + 0.0245 + 0.001; // ~20.48%
+    const uopEmployerCost = Math.round(uopGross * (1 + employerZusRate));
+
     // Calculate equivalent B2B revenue needed to match UoP net
     const b2bResults = jdgResults;
     const bestB2bNet = b2bResults ? b2bResults[b2bResults.best].monthly.netAmount : 0;
@@ -165,6 +169,7 @@ export default function Home() {
     return {
       uopGross,
       uopNet,
+      uopEmployerCost,
       b2bRevenue: monthlyRevenue,
       b2bNet: bestB2bNet,
       b2bAtUopGross: b2bAtUopGross[b2bAtUopGross.best].monthly.netAmount,
@@ -272,9 +277,10 @@ export default function Home() {
               {/* Monthly Revenue with Slider */}
               {activeTab !== 'b2bVsUop' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-3">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Miesięczny przychód brutto
                   </label>
+                  <p className="text-xs text-gray-500 mb-3">Kwota netto z faktury (bez VAT)</p>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <input
@@ -305,11 +311,10 @@ export default function Home() {
               )}
 
               {/* Monthly Costs with Slider */}
-              {activeTab !== 'b2bVsUop' && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-3">
-                    Miesięczne koszty operacyjne
-                  </label>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-3">
+                  Miesięczne koszty operacyjne
+                </label>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <input
@@ -337,15 +342,15 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              )}
 
               {/* B2B vs UoP inputs */}
               {activeTab === 'b2bVsUop' && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-3">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       💼 Twój przychód B2B (faktura)
                     </label>
+                    <p className="text-xs text-gray-500 mb-3">Kwota netto z faktury (bez VAT)</p>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         <input
@@ -378,7 +383,7 @@ export default function Home() {
                       <div className="flex items-center gap-3">
                         <input
                           type="range"
-                          min="4666"
+                          min="4806"
                           max="50000"
                           step="500"
                           value={uopGross}
@@ -396,7 +401,7 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="flex justify-between text-xs text-gray-500">
-                        <span>4 666 zł (min.)</span>
+                        <span>4 806 zł (min.)</span>
                         <span>50 000 zł</span>
                       </div>
                     </div>
@@ -420,8 +425,8 @@ export default function Home() {
                         onChange={(e) => setZusType(e.target.value as ZusType)}
                         className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                       >
-                        <option value="full">Pełny ZUS (~1 774 zł)</option>
-                        <option value="preferential">Preferencyjny (~600 zł)</option>
+                        <option value="full">Pełny ZUS (~1 927 zł)</option>
+                        <option value="preferential">Preferencyjny (~456 zł)</option>
                         <option value="smallPlus">Mały ZUS Plus</option>
                         <option value="startupRelief">Ulga na start</option>
                       </select>
@@ -491,8 +496,8 @@ export default function Home() {
                       onChange={(e) => setZusType(e.target.value as ZusType)}
                       className="w-full px-3 py-2.5 rounded-lg text-white text-sm"
                     >
-                      <option value="full">Pełny ZUS (~1 774 zł)</option>
-                      <option value="preferential">Preferencyjny (~600 zł)</option>
+                      <option value="full">Pełny ZUS (~1 927 zł)</option>
+                      <option value="preferential">Preferencyjny (~456 zł)</option>
                       <option value="smallPlus">Mały ZUS Plus</option>
                       <option value="startupRelief">Ulga na start</option>
                     </select>
@@ -632,7 +637,7 @@ export default function Home() {
           <div className="mt-6 pt-6 border-t border-white/10 grid md:grid-cols-2 gap-6 text-sm text-gray-300">
             <article>
               <h3 className="font-semibold text-white mb-2">🏢 Sp. z o.o. - kiedy się opłaca?</h3>
-              <p>Przy wysokich przychodach (powyżej 15-20 tys. zł/mc) i planach na rozwój. CIT 9% dla małych podatników + 19% dywidenda. Wymaga pełnej księgowości (~800 zł/mc).</p>
+              <p>Przy wysokich przychodach i planach na rozwój. CIT 9% dla małych podatników + 19% dywidenda. Uwaga: jednoosobowy wspólnik musi płacić ZUS (~2 359 zł/mc). Wymaga pełnej księgowości (~800 zł/mc).</p>
             </article>
             <article>
               <h3 className="font-semibold text-white mb-2">💼 B2B vs etat</h3>
@@ -738,11 +743,11 @@ const faqData = [
   },
   {
     question: 'Ile wynosi ZUS dla JDG w 2026 roku?',
-    answer: 'Pełny ZUS społeczny w 2026 roku wynosi około 1927 zł miesięcznie (bez zdrowotnej). Składka zdrowotna jest osobno. Preferencyjny ZUS (pierwsze 24 miesiące) to około 456 zł (społeczne). Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych – płacisz tylko zdrowotną.',
+    answer: 'Pełny ZUS społeczny w 2026 roku wynosi około 1 927 zł miesięcznie (bez zdrowotnej). Składka zdrowotna jest osobno. Preferencyjny ZUS (pierwsze 24 miesiące) to około 456 zł (społeczne). Mały ZUS Plus zależy od przychodów. Ulga na start (pierwsze 6 miesięcy) zwalnia ze składek społecznych – płacisz tylko zdrowotną.',
   },
   {
     question: 'Kiedy opłaca się założyć sp. z o.o. zamiast JDG?',
-    answer: 'Sp. z o.o. zaczyna się opłacać przy przychodach powyżej 15–20 tys. zł miesięcznie. Główne zalety to CIT 9% (mały podatnik), ograniczona odpowiedzialność i prestiż. Wady to podwójne opodatkowanie (CIT + dywidenda), droga księgowość (~800 zł/mc) i więcej formalności.',
+    answer: 'Sp. z o.o. zaczyna się opłacać przy wysokich przychodach — użyj zakładki "Porównanie" aby sprawdzić próg dla Twojej sytuacji. Główne zalety to CIT 9% (mały podatnik), ograniczona odpowiedzialność i prestiż. Wady to podwójne opodatkowanie (CIT + dywidenda), obowiązkowy ZUS wspólnika (~2 359 zł/mc w jednoosobowej spółce), droga księgowość (~800 zł/mc) i więcej formalności.',
   },
   {
     question: 'B2B czy umowa o pracę - co wybrać?',
@@ -898,7 +903,7 @@ function SpzooResultsView({
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className={`grid grid-cols-2 ${data.monthly.ownerMandatoryZus > 0 ? 'md:grid-cols-5' : 'md:grid-cols-4'} gap-4 mb-4`}>
               <div>
                 <p className="text-xs text-gray-500 mb-1">CIT</p>
                 <p className="font-semibold text-white">{formatCurrency(data.monthly.cit)}/mc</p>
@@ -907,6 +912,12 @@ function SpzooResultsView({
                 <p className="text-xs text-gray-500 mb-1">Podatek dywidenda</p>
                 <p className="font-semibold text-white">{formatCurrency(data.monthly.dividendTax)}/mc</p>
               </div>
+              {data.monthly.ownerMandatoryZus > 0 && (
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">ZUS wspólnika</p>
+                  <p className="font-semibold text-red-400">{formatCurrency(data.monthly.ownerMandatoryZus)}/mc</p>
+                </div>
+              )}
               <div>
                 <p className="text-xs text-gray-500 mb-1">Pensja netto</p>
                 <p className="font-semibold text-white">{formatCurrency(data.monthly.ownerNetSalary)}/mc</p>
@@ -925,9 +936,12 @@ function SpzooResultsView({
         ))}
       </div>
 
-      <div className="glass glow-orange rounded-xl p-4 text-sm">
+      <div className="glass glow-orange rounded-xl p-4 text-sm space-y-2">
         <p className="text-amber-300">
-          <strong>⚠️ Uwaga:</strong> Sp. z o.o. wymaga pełnej księgowości (~800 zł/mc) oraz ma dodatkowe obowiązki formalne.
+          <strong>⚠️ Uwaga:</strong> Jednoosobowy wspólnik sp. z o.o. musi opłacać obowiązkowy ZUS (~2 359 zł/mc: składki społeczne + zdrowotna) niezależnie od formy wypłaty. Uwzględniono w obliczeniach.
+        </p>
+        <p className="text-amber-300/70">
+          Sp. z o.o. wymaga pełnej księgowości (~800 zł/mc) oraz ma dodatkowe obowiązki formalne.
         </p>
       </div>
     </div>
@@ -1109,7 +1123,7 @@ function ComparisonView({
             </li>
             <li className="flex items-start gap-2">
               <span className="text-red-500">✗</span>
-              <span className="text-gray-600 dark:text-gray-300">Wysoki ZUS (~1 774 zł/mc)</span>
+              <span className="text-gray-600 dark:text-gray-300">Wysoki ZUS (~1 927 zł/mc)</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-red-500">✗</span>
@@ -1134,6 +1148,10 @@ function ComparisonView({
             <li className="flex items-start gap-2">
               <span className="text-green-500">✓</span>
               <span className="text-gray-600 dark:text-gray-300">Prestiż i wiarygodność</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-red-500">✗</span>
+              <span className="text-gray-600 dark:text-gray-300">Obowiązkowy ZUS wspólnika (~2 359 zł/mc)</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-red-500">✗</span>
@@ -1225,6 +1243,7 @@ function B2bVsUopView({
   b2bData: {
     uopGross: number;
     uopNet: number;
+    uopEmployerCost: number;
     b2bRevenue: number;
     b2bNet: number;
     b2bAtUopGross: number;
@@ -1238,10 +1257,6 @@ function B2bVsUopView({
   const b2bWins = b2bData.b2bNet > b2bData.uopNet;
   const difference = Math.abs(b2bData.b2bNet - b2bData.uopNet);
   const percentDiff = b2bData.uopNet > 0 ? ((b2bData.b2bNet - b2bData.uopNet) / b2bData.uopNet) * 100 : 0;
-
-  // Calculate what UoP gross would give the same net as B2B
-  // This is a rough estimate - solving the inverse is complex
-  const b2bAdvantageMonthly = b2bData.b2bNet - b2bData.uopNet;
 
   return (
     <div className="space-y-6">
@@ -1306,8 +1321,8 @@ function B2bVsUopView({
               <span className="font-semibold">{formatCurrency(b2bData.uopGross)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Forma:</span>
-              <span className="font-semibold text-sm">Umowa o pracę</span>
+              <span className="text-gray-500">Koszt pracodawcy:</span>
+              <span className="font-semibold text-sm text-gray-400">{formatCurrency(b2bData.uopEmployerCost)}</span>
             </div>
             <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-baseline">

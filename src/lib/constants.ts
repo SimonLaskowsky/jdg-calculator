@@ -115,6 +115,9 @@ export const RYCZALT_RATES = {
 // DODATKOWE ULGI I OPCJE
 // ===========================================
 
+/** Limit odliczenia składki zdrowotnej od dochodu - podatek liniowy (rocznie) */
+export const HEALTH_DEDUCTION_LIMIT_LINEAR = 14100;
+
 /** IP Box - preferencyjna stawka 5% dla dochodów z kwalifikowanych IP */
 export const IP_BOX_RATE = 0.05;
 
@@ -138,7 +141,7 @@ export const CIT_STANDARD_RATE = 0.19;
 export const DIVIDEND_TAX_RATE = 0.19;
 
 /** Próg małego podatnika CIT (~2M EUR w PLN) */
-export const CIT_SMALL_TAXPAYER_LIMIT = 9218000; // ~2M EUR × 4.6 PLN
+export const CIT_SMALL_TAXPAYER_LIMIT = 8517000; // ~2M EUR w PLN (kurs 2025)
 
 /** Szacunkowy koszt księgowości sp. z o.o. (miesięcznie) */
 export const SPZOO_ACCOUNTING_COST = 800;
@@ -260,6 +263,8 @@ export interface SpzooMonthlyBreakdown {
   ownerNetDividend: number;
   /** Łącznie na rękę właściciela */
   ownerTotalNet: number;
+  /** Obowiązkowy ZUS wspólnika (jednoosobowa sp. z o.o.) */
+  ownerMandatoryZus: number;
   /** Księgowość */
   accountingCost: number;
 }
@@ -283,6 +288,7 @@ export interface SpzooYearlyResult {
     ownerNetSalary: number;
     ownerNetDividend: number;
     ownerTotalNet: number;
+    ownerMandatoryZus: number;
     accountingCost: number;
     totalTaxBurden: number;
   };
