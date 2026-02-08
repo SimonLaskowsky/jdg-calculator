@@ -225,10 +225,13 @@ export default function Home() {
             Aktualne stawki na 2026 rok
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text">Ile zostanie?</span>
+            <span className="gradient-text">Ile zostanie Ci na rękę?</span>
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Sprawdź ile pieniędzy zostaje Ci na rękę po ZUS i podatkach
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-3">
+            Kalkulator ZUS i PIT 2026 — sprawdź, która forma działalności jest dla Ciebie najlepsza
+          </p>
+          <p className="text-sm text-gray-500 max-w-xl mx-auto">
+            Porównaj JDG, sp.&nbsp;z&nbsp;o.o. i B2B vs etat. Skala, liniowy czy ryczałt? Oblicz w&nbsp;kilka sekund.
           </p>
         </header>
 
