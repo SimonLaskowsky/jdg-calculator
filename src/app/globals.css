@@ -333,3 +333,22 @@ input[type="checkbox"]:checked::after {
     transform: translateY(0);
   }
 }
+
+/* Cookie banner shake */
+.cookie-shake {
+  animation: cookieShake 0.5s ease-in-out;
+}
+
+.cookie-shake-glow {
+  border-color: rgba(96, 165, 250, 0.6) !important;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes cookieShake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-6px) scale(1.02); }
+  30% { transform: translateX(6px) scale(1.03); }
+  50% { transform: translateX(-4px) scale(1.02); }
+  70% { transform: translateX(4px) scale(1.01); }
+  90% { transform: translateX(-2px) scale(1.0); }
+}
