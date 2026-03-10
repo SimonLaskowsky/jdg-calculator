@@ -61,21 +61,12 @@ export const metadata: Metadata = {
     title: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
     description:
       'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Porównaj JDG, sp. z o.o. i B2B vs etat.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Ile Zostanie - Kalkulator ZUS i PIT 2026',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
     description:
       'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach w 2026 roku.',
-    images: ['/og-image.png'],
   },
   alternates: {
     canonical: siteUrl,
@@ -145,7 +136,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <Analytics />
         {children}
         <CookieBanner />

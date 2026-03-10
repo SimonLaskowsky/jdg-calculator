@@ -1,6 +1,13 @@
 /**
  * Funkcje obliczeniowe dla sp. z o.o.
- * Oblicza CIT, dywidendę, pensję i różne scenariusze wypłaty
+ * Oblicza CIT, dywidendę, wynagrodzenie zarządu i różne scenariusze wypłaty.
+ *
+ * WAŻNE: Jednoosobowy wspólnik sp. z o.o. (kod ZUS 05 10) jest traktowany
+ * jak osoba prowadząca pozarolniczą działalność i ZAWSZE opłaca pełny ZUS
+ * od podstawy FULL_ZUS_BASE (60% przeciętnego wynagrodzenia), niezależnie
+ * od formy wypłaty. Nie może być zatrudniony we własnej jednoosobowej spółce
+ * na umowę o pracę. Scenariusze "pensja" modelują wynagrodzenie zarządu
+ * (art. 202 KSH) — brak składek ZUS pracodawcy/pracownika od tej kwoty.
  */
 
 import {
@@ -8,9 +15,6 @@ import {
   CIT_STANDARD_RATE,
   DIVIDEND_TAX_RATE,
   SPZOO_ACCOUNTING_COST,
-  EMPLOYEE_ZUS_RATES,
-  EMPLOYER_ZUS_RATES,
-  EMPLOYEE_HEALTH_RATE,
   TAX_FREE_AMOUNT,
   TAX_THRESHOLD,
   TAX_SCALE_RATES,
@@ -30,11 +34,10 @@ import {
 
 /**
  * Oblicza obowiązkowe składki ZUS jednoosobowego wspólnika sp. z o.o.
- * Jednoosobowy wspólnik jest traktowany jak osoba prowadząca działalność
- * i musi opłacać pełne składki społeczne + zdrowotną niezależnie od formy wypłaty.
+ * Wspólnik zawsze opłaca pełny ZUS społeczny od FULL_ZUS_BASE + min. zdrowotna,
+ * niezależnie od formy wypłaty (dywidenda, wynagrodzenie zarządu).
  */
 function calculateOwnerMandatoryZus(): number {
-  // Składki społeczne na podstawie 60% prognozowanego przeciętnego wynagrodzenia
   const social =
     FULL_ZUS_BASE * ZUS_RATES.pension +
     FULL_ZUS_BASE * ZUS_RATES.disability +
@@ -42,94 +45,37 @@ function calculateOwnerMandatoryZus(): number {
     FULL_ZUS_BASE * ZUS_RATES.accident +
     FULL_ZUS_BASE * ZUS_RATES.laborFund;
 
-  // Składka zdrowotna - minimum (9% minimalnego wynagrodzenia)
-  // Wspólnik na samej dywidendzie nie ma dochodu z działalności, więc płaci minimum
+  // Minimalna składka zdrowotna (9% minimalnego wynagrodzenia)
   const health = HEALTH_MIN;
 
   return Math.round((social + health) * 100) / 100;
 }
 
 /**
- * Oblicza składki ZUS pracownika (część pracownika)
+ * Oblicza PIT od wynagrodzenia zarządu (art. 13 pkt 7 PDoF).
+ * Wynagrodzenie zarządu na podstawie powołania NIE jest objęte składkami
+ * ZUS społecznymi ani zdrowotnymi — jedynie PIT według skali podatkowej.
+ * KUP = 250 zł/mc (art. 22 ust. 9 pkt 5 ustawy o PIT).
  */
-function calculateEmployeeZus(grossSalary: number): number {
-  return grossSalary * (
-    EMPLOYEE_ZUS_RATES.pension +
-    EMPLOYEE_ZUS_RATES.disability +
-    EMPLOYEE_ZUS_RATES.sickness
-  );
-}
+function calculateManagementFeePit(monthlyFee: number): number {
+  if (monthlyFee <= 0) return 0;
 
-/**
- * Oblicza składki ZUS pracodawcy
- */
-function calculateEmployerZus(grossSalary: number): number {
-  return grossSalary * (
-    EMPLOYER_ZUS_RATES.pension +
-    EMPLOYER_ZUS_RATES.disability +
-    EMPLOYER_ZUS_RATES.accident +
-    EMPLOYER_ZUS_RATES.laborFund +
-    EMPLOYER_ZUS_RATES.fgsp
-  );
-}
+  const kup = 250;
+  const base = Math.max(0, monthlyFee - kup);
+  const yearlyTaxable = base * 12;
 
-/**
- * Oblicza składkę zdrowotną pracownika
- */
-function calculateEmployeeHealth(grossSalary: number): number {
-  const zusEmployee = calculateEmployeeZus(grossSalary);
-  const base = grossSalary - zusEmployee;
-  return base * EMPLOYEE_HEALTH_RATE;
-}
-
-/**
- * Oblicza zaliczkę na PIT pracownika (uproszczone)
- */
-function calculateEmployeePit(grossSalary: number): number {
-  const zusEmployee = calculateEmployeeZus(grossSalary);
-  const base = grossSalary - zusEmployee;
-
-  // Koszty uzyskania przychodu pracownika (250 zł/mc)
-  const taxableIncome = Math.max(0, base - 250);
-
-  // Miesięczna kwota wolna (~2500 zł/mc)
-  const monthlyTaxFree = TAX_FREE_AMOUNT / 12;
-
-  // Uproszczona kalkulacja (12% dla większości)
-  const yearlyTaxable = taxableIncome * 12;
   let yearlyTax = 0;
-
   if (yearlyTaxable > TAX_FREE_AMOUNT) {
     if (yearlyTaxable <= TAX_THRESHOLD) {
       yearlyTax = (yearlyTaxable - TAX_FREE_AMOUNT) * TAX_SCALE_RATES.lower;
     } else {
-      yearlyTax = (TAX_THRESHOLD - TAX_FREE_AMOUNT) * TAX_SCALE_RATES.lower +
-                  (yearlyTaxable - TAX_THRESHOLD) * TAX_SCALE_RATES.upper;
+      yearlyTax =
+        (TAX_THRESHOLD - TAX_FREE_AMOUNT) * TAX_SCALE_RATES.lower +
+        (yearlyTaxable - TAX_THRESHOLD) * TAX_SCALE_RATES.upper;
     }
   }
 
   return yearlyTax / 12;
-}
-
-/**
- * Oblicza pensję netto pracownika
- */
-function calculateNetSalary(grossSalary: number): number {
-  if (grossSalary <= 0) return 0;
-
-  const zusEmployee = calculateEmployeeZus(grossSalary);
-  const health = calculateEmployeeHealth(grossSalary);
-  const pit = calculateEmployeePit(grossSalary);
-
-  return Math.max(0, grossSalary - zusEmployee - health - pit);
-}
-
-/**
- * Oblicza całkowity koszt pracodawcy za pracownika
- */
-function calculateTotalEmploymentCost(grossSalary: number): number {
-  if (grossSalary <= 0) return 0;
-  return grossSalary + calculateEmployerZus(grossSalary);
 }
 
 /**
@@ -155,7 +101,8 @@ function calculateDividendTax(dividend: number): number {
 
 /**
  * Scenariusz 1: Tylko dywidenda
- * Właściciel nie pobiera pensji, cały zysk wypłaca jako dywidendę
+ * Właściciel nie pobiera wynagrodzenia zarządu, cały zysk wypłaca jako dywidendę.
+ * ZUS wspólnika (pełny ZUS od FULL_ZUS_BASE) opłacany osobno.
  */
 export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearlyResult {
   const monthlyRevenue = input.monthlyRevenue;
@@ -224,21 +171,22 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
 }
 
 /**
- * Scenariusz 2: Minimalna pensja + dywidenda
- * Właściciel pobiera minimalną pensję, reszta jako dywidenda
+ * Scenariusz 2: Wynagrodzenie zarządu (min. pensja) + dywidenda
+ * Właściciel pobiera minimalne wynagrodzenie zarządu (brak ZUS pracodawcy/pracownika),
+ * reszta zysku jako dywidenda. ZUS wspólnika (pełny) opłacany osobno przez właściciela.
  */
 export function calculateMinSalaryPlusDividend(input: SpzooCalculationInput): SpzooYearlyResult {
   const monthlyRevenue = input.monthlyRevenue;
   const monthlyOperatingCosts = input.monthlyOperatingCosts;
   const accountingCost = SPZOO_ACCOUNTING_COST;
 
-  // Pensja minimalna
-  const grossSalary = MINIMUM_WAGE;
-  const employmentCost = calculateTotalEmploymentCost(grossSalary);
-  const netSalary = calculateNetSalary(grossSalary);
+  // Wynagrodzenie zarządu = minimalne wynagrodzenie (koszt spółki bez ZUS pracodawcy)
+  const managementFee = MINIMUM_WAGE;
+  const feePit = calculateManagementFeePit(managementFee);
+  const feeNet = Math.max(0, managementFee - feePit);
 
-  // Zysk przed CIT (przychód - koszty - pensja z ZUS pracodawcy - księgowość)
-  const profitBeforeTax = monthlyRevenue - monthlyOperatingCosts - employmentCost - accountingCost;
+  // Zysk przed CIT (przychód - koszty - wynagrodzenie zarządu - księgowość)
+  const profitBeforeTax = monthlyRevenue - monthlyOperatingCosts - managementFee - accountingCost;
 
   // CIT
   const cit = calculateCit(Math.max(0, profitBeforeTax), input.citRate);
@@ -250,33 +198,30 @@ export function calculateMinSalaryPlusDividend(input: SpzooCalculationInput): Sp
   const dividendTax = calculateDividendTax(profitAfterTax);
 
   // Dywidenda netto
-  const netDividend = profitAfterTax - dividendTax;
+  const netDividend = Math.max(0, profitAfterTax - dividendTax);
 
-  // Łącznie na rękę
-  const totalNet = netSalary + netDividend;
+  // ZUS wspólnika — zawsze od FULL_ZUS_BASE, niezależnie od formy wypłaty
+  const ownerMandatoryZus = calculateOwnerMandatoryZus();
+
+  // Łącznie na rękę = wynagrodzenie netto + dywidenda netto - ZUS wspólnika
+  const totalNet = Math.max(0, feeNet + netDividend - ownerMandatoryZus);
 
   const monthly: SpzooMonthlyBreakdown = {
     companyRevenue: monthlyRevenue,
     operatingCosts: monthlyOperatingCosts,
-    employmentCosts: employmentCost,
+    employmentCosts: managementFee, // wynagrodzenie zarządu (bez ZUS pracodawcy)
     profitBeforeTax: Math.max(0, profitBeforeTax),
     cit,
     profitAfterTax,
     dividendTax,
-    ownerNetSalary: netSalary,
-    ownerNetDividend: Math.max(0, netDividend),
-    ownerTotalNet: Math.max(0, totalNet),
-    ownerMandatoryZus: 0, // ZUS opłacany przez pensję
+    ownerNetSalary: feeNet,
+    ownerNetDividend: netDividend,
+    ownerTotalNet: totalNet,
+    ownerMandatoryZus,
     accountingCost,
   };
 
-  // Całkowite obciążenia = ZUS pracodawcy + ZUS pracownika + zdrowotna + PIT od pensji + CIT + podatek od dywidendy
-  const zusEmployee = calculateEmployeeZus(grossSalary);
-  const zusEmployer = calculateEmployerZus(grossSalary);
-  const health = calculateEmployeeHealth(grossSalary);
-  const pitSalary = calculateEmployeePit(grossSalary);
-
-  const totalTaxBurden = (zusEmployee + zusEmployer + health + pitSalary + cit + dividendTax + accountingCost) * 12;
+  const totalTaxBurden = (feePit + cit + dividendTax + ownerMandatoryZus + accountingCost) * 12;
 
   return {
     payoutMethod: 'mixed',
@@ -285,15 +230,15 @@ export function calculateMinSalaryPlusDividend(input: SpzooCalculationInput): Sp
     yearly: {
       revenue: monthlyRevenue * 12,
       operatingCosts: monthlyOperatingCosts * 12,
-      employmentCosts: employmentCost * 12,
+      employmentCosts: managementFee * 12,
       profitBeforeTax: monthly.profitBeforeTax * 12,
       cit: cit * 12,
       profitAfterTax: profitAfterTax * 12,
       dividendTax: dividendTax * 12,
-      ownerNetSalary: netSalary * 12,
-      ownerNetDividend: Math.max(0, netDividend * 12),
-      ownerTotalNet: Math.max(0, totalNet * 12),
-      ownerMandatoryZus: 0,
+      ownerNetSalary: feeNet * 12,
+      ownerNetDividend: netDividend * 12,
+      ownerTotalNet: totalNet * 12,
+      ownerMandatoryZus: ownerMandatoryZus * 12,
       accountingCost: accountingCost * 12,
       totalTaxBurden,
     },
@@ -302,53 +247,54 @@ export function calculateMinSalaryPlusDividend(input: SpzooCalculationInput): Sp
 }
 
 /**
- * Scenariusz 3: Pełna pensja (bez dywidendy)
- * Właściciel pobiera całość jako pensję (optymalizacja przy niższych dochodach)
+ * Scenariusz 3: Pełne wynagrodzenie zarządu (bez dywidendy)
+ * Właściciel wypłaca całość dostępnych środków jako wynagrodzenie zarządu
+ * (brak ZUS pracodawcy/pracownika — bez overhead ZUS). ZUS wspólnika (pełny)
+ * opłacany osobno.
  */
 export function calculateFullSalary(input: SpzooCalculationInput): SpzooYearlyResult {
   const monthlyRevenue = input.monthlyRevenue;
   const monthlyOperatingCosts = input.monthlyOperatingCosts;
   const accountingCost = SPZOO_ACCOUNTING_COST;
 
-  // Maksymalna pensja = przychód - koszty - księgowość - ZUS pracodawcy
-  // Rozwiązujemy równanie: pensja + ZUS_pracodawcy(pensja) = dostępne środki
+  // Maksymalne wynagrodzenie zarządu = wszystkie dostępne środki
+  // (brak ZUS pracodawcy, więc całość trafia do właściciela jako wynagrodzenie)
   const availableFunds = monthlyRevenue - monthlyOperatingCosts - accountingCost;
+  const managementFee = Math.max(0, availableFunds);
 
-  // ZUS pracodawcy to ~20% pensji, więc pensja ≈ dostępne / 1.2
-  const employerZusRate = EMPLOYER_ZUS_RATES.pension + EMPLOYER_ZUS_RATES.disability +
-                          EMPLOYER_ZUS_RATES.accident + EMPLOYER_ZUS_RATES.laborFund +
-                          EMPLOYER_ZUS_RATES.fgsp;
-  const grossSalary = Math.max(0, availableFunds / (1 + employerZusRate));
+  const feePit = calculateManagementFeePit(managementFee);
+  const feeNet = Math.max(0, managementFee - feePit);
 
-  const employmentCost = calculateTotalEmploymentCost(grossSalary);
-  const netSalary = calculateNetSalary(grossSalary);
-
-  // Przy pełnej pensji nie ma zysku do opodatkowania CIT
-  const profitBeforeTax = Math.max(0, monthlyRevenue - monthlyOperatingCosts - employmentCost - accountingCost);
+  // Przy pełnym wynagrodzeniu zarządu brak zysku do CIT
+  const profitBeforeTax = Math.max(
+    0,
+    monthlyRevenue - monthlyOperatingCosts - managementFee - accountingCost
+  );
   const cit = calculateCit(profitBeforeTax, input.citRate);
-  const profitAfterTax = profitBeforeTax - cit;
+  const profitAfterTax = Math.max(0, profitBeforeTax - cit);
+
+  // ZUS wspólnika — zawsze od FULL_ZUS_BASE
+  const ownerMandatoryZus = calculateOwnerMandatoryZus();
+
+  // Na rękę = wynagrodzenie netto - ZUS wspólnika
+  const totalNet = Math.max(0, feeNet - ownerMandatoryZus);
 
   const monthly: SpzooMonthlyBreakdown = {
     companyRevenue: monthlyRevenue,
     operatingCosts: monthlyOperatingCosts,
-    employmentCosts: employmentCost,
+    employmentCosts: managementFee,
     profitBeforeTax,
     cit,
     profitAfterTax,
     dividendTax: 0,
-    ownerNetSalary: netSalary,
+    ownerNetSalary: feeNet,
     ownerNetDividend: 0,
-    ownerTotalNet: netSalary,
-    ownerMandatoryZus: 0, // ZUS opłacany przez pensję
+    ownerTotalNet: totalNet,
+    ownerMandatoryZus,
     accountingCost,
   };
 
-  const zusEmployee = calculateEmployeeZus(grossSalary);
-  const zusEmployer = calculateEmployerZus(grossSalary);
-  const health = calculateEmployeeHealth(grossSalary);
-  const pitSalary = calculateEmployeePit(grossSalary);
-
-  const totalTaxBurden = (zusEmployee + zusEmployer + health + pitSalary + cit + accountingCost) * 12;
+  const totalTaxBurden = (feePit + cit + ownerMandatoryZus + accountingCost) * 12;
 
   return {
     payoutMethod: 'salary',
@@ -357,15 +303,15 @@ export function calculateFullSalary(input: SpzooCalculationInput): SpzooYearlyRe
     yearly: {
       revenue: monthlyRevenue * 12,
       operatingCosts: monthlyOperatingCosts * 12,
-      employmentCosts: employmentCost * 12,
+      employmentCosts: managementFee * 12,
       profitBeforeTax: profitBeforeTax * 12,
       cit: cit * 12,
       profitAfterTax: profitAfterTax * 12,
       dividendTax: 0,
-      ownerNetSalary: netSalary * 12,
+      ownerNetSalary: feeNet * 12,
       ownerNetDividend: 0,
-      ownerTotalNet: netSalary * 12,
-      ownerMandatoryZus: 0,
+      ownerTotalNet: totalNet * 12,
+      ownerMandatoryZus: ownerMandatoryZus * 12,
       accountingCost: accountingCost * 12,
       totalTaxBurden,
     },
@@ -421,7 +367,6 @@ export function findSpzooThreshold(
   monthlyCosts: number,
   citRate: CitRate = 'small'
 ): number | null {
-  // Szukamy binarnie przychodu, przy którym sp. z o.o. daje więcej netto
   let low = 5000;
   let high = 100000;
 
