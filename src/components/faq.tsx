@@ -52,7 +52,7 @@ const faqItems = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-16 sm:py-24">
+    <section id="faq" className="py-12 sm:py-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -63,7 +63,7 @@ export function FAQ() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
           {faqItems.map((item, index) => (
             <Accordion key={index} multiple={false} className="w-full">
               <AccordionItem value={`item-${index}`} className="rounded-lg border border-border/50 bg-card px-4">

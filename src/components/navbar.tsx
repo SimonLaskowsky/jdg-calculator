@@ -34,13 +34,13 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-8 md:flex">
-          <Link href="#kalkulator" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/#kalkulator" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Kalkulator
           </Link>
-          <Link href="#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             FAQ
           </Link>
-          <Link href="#poradnik" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/#poradnik" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Poradnik
           </Link>
         </nav>
@@ -76,21 +76,21 @@ export function Navbar() {
         <div className="border-t border-border/50 bg-background md:hidden">
           <nav className="flex flex-col gap-2 px-4 py-4">
             <Link
-              href="#kalkulator"
+              href="/#kalkulator"
               className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={() => setIsMenuOpen(false)}
             >
               Kalkulator
             </Link>
             <Link
-              href="#faq"
+              href="/#faq"
               className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={() => setIsMenuOpen(false)}
             >
               FAQ
             </Link>
             <Link
-              href="#poradnik"
+              href="/#poradnik"
               className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={() => setIsMenuOpen(false)}
             >

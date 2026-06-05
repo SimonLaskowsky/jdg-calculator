@@ -31,7 +31,7 @@ const guideItems = [
 
 export function Guide() {
   return (
-    <section id="poradnik" className="border-t border-border/50 bg-muted/30 py-16 sm:py-24">
+    <section id="poradnik" className="border-t border-border/50 bg-muted/30 py-12 sm:py-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -42,7 +42,7 @@ export function Guide() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {guideItems.map((item, index) => (
             <Card key={index} className="border-border/50 bg-card transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">

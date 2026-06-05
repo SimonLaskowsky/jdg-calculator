@@ -124,7 +124,7 @@ export function Calculator() {
   }, [inputs.uopGross, inputs.revenue, jdgResults])
 
   return (
-    <section id="kalkulator" className="py-8">
+    <section id="kalkulator" className="py-4">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
           {/* Left Column - Inputs */}

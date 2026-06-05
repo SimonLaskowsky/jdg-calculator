@@ -5,7 +5,7 @@ const trustPoints = ["Bezpłatny kalkulator", "Wyniki w czasie rzeczywistym", "A
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pb-8 pt-16 sm:pt-24">
+    <section className="relative overflow-hidden pb-6 pt-12 sm:pt-16">
       {/* Soft gradient backdrop */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-[-10%] h-130 w-[min(900px,90vw)] -translate-x-1/2 rounded-full bg-primary/15 blur-3xl" />
@@ -14,9 +14,6 @@ export function Hero() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium">
-            Aktualne stawki na 2026 rok
-          </Badge>
           <h1 className="mx-auto max-w-4xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             <span className="bg-linear-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
               Ile zostanie
