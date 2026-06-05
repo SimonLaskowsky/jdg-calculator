@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
-const siteUrl = 'https://jdg-kalkulator.pl'; // Update with your actual domain
+const inter = Inter({
+  variable: '--font-geist-sans',
+  subsets: ['latin', 'latin-ext'],
+});
+
+const siteUrl = 'https://ilezostanie.com'; // Update with your actual domain
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -132,17 +138,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
+    <html lang="pl" className={`${inter.variable} bg-background`} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#0f0f1a" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Ustaw motyw przed renderem, by uniknąć mignięcia (flash) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
+          }}
+        />
       </head>
-      <body className="antialiased">
+      <body className="overflow-x-hidden font-sans antialiased">
         {children}
       </body>
     </html>

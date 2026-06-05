@@ -93,6 +93,9 @@ export const TAX_SCALE_RATES = {
 /** Stawka podatku liniowego */
 export const TAX_LINEAR_RATE = 0.19;
 
+/** Limit odliczenia zapłaconej składki zdrowotnej od dochodu - podatek liniowy (2026) */
+export const LINEAR_HEALTH_DEDUCTION_LIMIT = 14100;
+
 /** Wszystkie stawki ryczałtu (od najwyższej do najniższej) */
 export const RYCZALT_RATES = {
   /** Wolne zawody (lekarze, prawnicy, inżynierowie, architekci) */
@@ -142,6 +145,12 @@ export const CIT_SMALL_TAXPAYER_LIMIT = 9218000; // ~2M EUR × 4.6 PLN
 
 /** Szacunkowy koszt księgowości sp. z o.o. (miesięcznie) */
 export const SPZOO_ACCOUNTING_COST = 800;
+
+/**
+ * Składka zdrowotna jedynego wspólnika jednoosobowej sp. z o.o. 2026.
+ * Stała: 9% przeciętnego wynagrodzenia w sektorze przedsiębiorstw (9 228,64 zł).
+ */
+export const SPZOO_OWNER_HEALTH = 830.58;
 
 /** Składki ZUS pracownika (część pracownika) */
 export const EMPLOYEE_ZUS_RATES = {

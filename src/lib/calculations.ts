@@ -17,6 +17,7 @@ import {
   TAX_THRESHOLD,
   TAX_SCALE_RATES,
   TAX_LINEAR_RATE,
+  LINEAR_HEALTH_DEDUCTION_LIMIT,
   IP_BOX_RATE,
   COPYRIGHT_COSTS_RATE,
   type ZusType,
@@ -283,9 +284,12 @@ export function calculateLinear(input: CalculationInput): YearlyResult {
   const yearlyHealth = monthlyHealth * 12;
 
   // Podatek - IP Box (5%) lub liniowy (19%)
+  // Liniowy: podstawę pomniejsza się o zapłaconą składkę zdrowotną (limit roczny)
+  const healthDeduction = Math.min(yearlyHealth, LINEAR_HEALTH_DEDUCTION_LIMIT);
+  const linearTaxBase = Math.max(0, incomeAfterZus - healthDeduction);
   const yearlyTax = input.useIpBox
     ? calculateTaxIpBox(Math.max(0, incomeAfterZus))
-    : calculateTaxLinear(Math.max(0, incomeAfterZus));
+    : calculateTaxLinear(linearTaxBase);
   const monthlyTax = yearlyTax / 12;
 
   // Sumy
@@ -333,12 +337,13 @@ export function calculateRyczalt(input: CalculationInput): YearlyResult {
   );
   const yearlyZusSocial = monthlyZusSocial * 12;
 
-  // Składka zdrowotna (stała kwota zależna od przychodu)
-  const monthlyHealth = calculateHealthRyczalt(yearlyRevenue);
+  // Składka zdrowotna - próg liczony od przychodu pomniejszonego o składki społeczne
+  const monthlyHealth = calculateHealthRyczalt(Math.max(0, yearlyRevenue - yearlyZusSocial));
   const yearlyHealth = monthlyHealth * 12;
 
-  // Podatek ryczałtowy
-  const yearlyTax = calculateTaxRyczalt(yearlyRevenue, ryczaltRate);
+  // Podatek ryczałtowy - podstawa: przychód - składki społeczne - 50% zapłaconej zdrowotnej
+  const taxBase = Math.max(0, yearlyRevenue - yearlyZusSocial - 0.5 * yearlyHealth);
+  const yearlyTax = calculateTaxRyczalt(taxBase, ryczaltRate);
   const monthlyTax = yearlyTax / 12;
 
   // Sumy

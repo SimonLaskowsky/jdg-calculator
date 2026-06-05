@@ -3,11 +3,13 @@
  * Oblicza CIT, dywidendę, pensję i różne scenariusze wypłaty
  */
 
+import { calculateZusSocial } from './calculations';
 import {
   CIT_SMALL_RATE,
   CIT_STANDARD_RATE,
   DIVIDEND_TAX_RATE,
   SPZOO_ACCOUNTING_COST,
+  SPZOO_OWNER_HEALTH,
   EMPLOYEE_ZUS_RATES,
   EMPLOYER_ZUS_RATES,
   EMPLOYEE_HEALTH_RATE,
@@ -138,6 +140,11 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
   const monthlyOperatingCosts = input.monthlyOperatingCosts;
   const accountingCost = SPZOO_ACCOUNTING_COST;
 
+  // Jedyny wspólnik jednoosobowej sp. z o.o. obowiązkowo opłaca ZUS (jak JDG),
+  // niezależnie od sposobu wypłaty zysku.
+  const ownerSocial = calculateZusSocial('full', 0, true);
+  const ownerZus = ownerSocial + SPZOO_OWNER_HEALTH;
+
   // Zysk przed CIT (przychód - koszty operacyjne - księgowość)
   const profitBeforeTax = monthlyRevenue - monthlyOperatingCosts - accountingCost;
 
@@ -153,6 +160,9 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
   // Dywidenda netto
   const netDividend = Math.max(0, profitAfterTax - dividendTax);
 
+  // Na rękę: dywidenda netto pomniejszona o obowiązkowy ZUS wspólnika
+  const ownerTotalNet = Math.max(0, netDividend - ownerZus);
+
   const monthly: SpzooMonthlyBreakdown = {
     companyRevenue: monthlyRevenue,
     operatingCosts: monthlyOperatingCosts,
@@ -163,11 +173,11 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
     dividendTax,
     ownerNetSalary: 0,
     ownerNetDividend: netDividend,
-    ownerTotalNet: netDividend,
+    ownerTotalNet,
     accountingCost,
   };
 
-  const totalTaxBurden = (cit + dividendTax + accountingCost) * 12;
+  const totalTaxBurden = (cit + dividendTax + accountingCost + ownerZus) * 12;
 
   return {
     payoutMethod: 'dividend',
@@ -183,7 +193,7 @@ export function calculateDividendOnly(input: SpzooCalculationInput): SpzooYearly
       dividendTax: dividendTax * 12,
       ownerNetSalary: 0,
       ownerNetDividend: netDividend * 12,
-      ownerTotalNet: netDividend * 12,
+      ownerTotalNet: ownerTotalNet * 12,
       accountingCost: accountingCost * 12,
       totalTaxBurden,
     },
