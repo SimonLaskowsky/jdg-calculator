@@ -31,14 +31,11 @@ export function Hero({ title, subtitle }: HeroProps = {}) {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium">
-            Aktualne stawki na 2026 rok
-          </Badge>
           <h1 className="mx-auto max-w-4xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {title ?? defaultTitle}
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            {subtitle ?? "Porównaj JDG i sp. z o.o. — znajdź najkorzystniejszą formę opodatkowania dla swojej działalności."}
+            {subtitle ?? "Porównaj JDG i sp. z o.o. - znajdź najkorzystniejszą formę opodatkowania dla swojej działalności."}
           </p>
 
           {/* Trust points */}
