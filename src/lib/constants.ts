@@ -93,9 +93,6 @@ export const TAX_SCALE_RATES = {
 /** Stawka podatku liniowego */
 export const TAX_LINEAR_RATE = 0.19;
 
-/** Limit odliczenia zapłaconej składki zdrowotnej od dochodu - podatek liniowy (2026) */
-export const LINEAR_HEALTH_DEDUCTION_LIMIT = 14100;
-
 /** Wszystkie stawki ryczałtu (od najwyższej do najniższej) */
 export const RYCZALT_RATES = {
   /** Wolne zawody (lekarze, prawnicy, inżynierowie, architekci) */
@@ -117,6 +114,9 @@ export const RYCZALT_RATES = {
 // ===========================================
 // DODATKOWE ULGI I OPCJE
 // ===========================================
+
+/** Limit odliczenia składki zdrowotnej od dochodu - podatek liniowy (rocznie) */
+export const HEALTH_DEDUCTION_LIMIT_LINEAR = 14100;
 
 /** IP Box - preferencyjna stawka 5% dla dochodów z kwalifikowanych IP */
 export const IP_BOX_RATE = 0.05;
@@ -141,16 +141,10 @@ export const CIT_STANDARD_RATE = 0.19;
 export const DIVIDEND_TAX_RATE = 0.19;
 
 /** Próg małego podatnika CIT (~2M EUR w PLN) */
-export const CIT_SMALL_TAXPAYER_LIMIT = 9218000; // ~2M EUR × 4.6 PLN
+export const CIT_SMALL_TAXPAYER_LIMIT = 8517000; // ~2M EUR w PLN (kurs 2025)
 
 /** Szacunkowy koszt księgowości sp. z o.o. (miesięcznie) */
 export const SPZOO_ACCOUNTING_COST = 800;
-
-/**
- * Składka zdrowotna jedynego wspólnika jednoosobowej sp. z o.o. 2026.
- * Stała: 9% przeciętnego wynagrodzenia w sektorze przedsiębiorstw (9 228,64 zł).
- */
-export const SPZOO_OWNER_HEALTH = 830.58;
 
 /** Składki ZUS pracownika (część pracownika) */
 export const EMPLOYEE_ZUS_RATES = {
@@ -269,6 +263,8 @@ export interface SpzooMonthlyBreakdown {
   ownerNetDividend: number;
   /** Łącznie na rękę właściciela */
   ownerTotalNet: number;
+  /** Obowiązkowy ZUS wspólnika (jednoosobowa sp. z o.o.) */
+  ownerMandatoryZus: number;
   /** Księgowość */
   accountingCost: number;
 }
@@ -292,6 +288,7 @@ export interface SpzooYearlyResult {
     ownerNetSalary: number;
     ownerNetDividend: number;
     ownerTotalNet: number;
+    ownerMandatoryZus: number;
     accountingCost: number;
     totalTaxBurden: number;
   };

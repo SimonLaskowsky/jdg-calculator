@@ -1,9 +1,26 @@
+import type { ReactNode } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Check } from "lucide-react"
 
 const trustPoints = ["Bezpłatny kalkulator", "Wyniki w czasie rzeczywistym", "Aktualne stawki ZUS i PIT 2026"]
 
-export function Hero() {
+interface HeroProps {
+  /** Nagłówek H1. Domyślnie „Ile zostanie Ci na rękę?" z zielonym akcentem. */
+  title?: ReactNode
+  /** Podtytuł pod nagłówkiem. */
+  subtitle?: ReactNode
+}
+
+const defaultTitle = (
+  <>
+    <span className="bg-linear-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
+      Ile zostanie
+    </span>{" "}
+    Ci na rękę?
+  </>
+)
+
+export function Hero({ title, subtitle }: HeroProps = {}) {
   return (
     <section className="relative overflow-hidden pb-6 pt-12 sm:pt-16">
       {/* Soft gradient backdrop */}
@@ -14,14 +31,14 @@ export function Hero() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
+          <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium">
+            Aktualne stawki na 2026 rok
+          </Badge>
           <h1 className="mx-auto max-w-4xl text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            <span className="bg-linear-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
-              Ile zostanie
-            </span>{" "}
-            Ci na rękę?
+            {title ?? defaultTitle}
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Porównaj JDG i sp. z o.o. - znajdź najkorzystniejszą formę opodatkowania dla swojej działalności.
+            {subtitle ?? "Porównaj JDG i sp. z o.o. — znajdź najkorzystniejszą formę opodatkowania dla swojej działalności."}
           </p>
 
           {/* Trust points */}

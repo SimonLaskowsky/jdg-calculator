@@ -23,8 +23,8 @@ export interface CalculatorInputState {
   authorCosts: boolean
 }
 
-export function Calculator() {
-  const [activeTab, setActiveTab] = useState("jdg")
+export function Calculator({ defaultTab = "jdg" }: { defaultTab?: string }) {
+  const [activeTab, setActiveTab] = useState(defaultTab)
   const [inputs, setInputs] = useState<CalculatorInputState>({
     revenue: 20000,
     costs: 3000,

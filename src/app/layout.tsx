@@ -1,23 +1,27 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Analytics } from '@/components/Analytics';
+import { CookieBanner } from '@/components/CookieBanner';
 
 const inter = Inter({
   variable: '--font-geist-sans',
   subsets: ['latin', 'latin-ext'],
 });
 
-const siteUrl = 'https://ilezostanie.com'; // Update with your actual domain
+const siteUrl = 'https://ilezostanie.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
-    template: '%s | Kalkulator ZUS i PIT 2026',
+    default: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
+    template: '%s | Ile Zostanie?',
   },
   description:
-    'Bezpłatny kalkulator ZUS i PIT na 2026 rok. Porównaj JDG (skala, liniowy, ryczałt) ze sp. z o.o. Sprawdź B2B vs etat. Oblicz ile zarobisz na rękę i która forma opodatkowania jest najlepsza.',
+    'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Darmowy kalkulator 2026 - porównaj JDG, sp. z o.o. i B2B vs etat.',
   keywords: [
+    'ile zostanie na rękę',
+    'ile zostanie po podatkach',
     'kalkulator ZUS 2026',
     'kalkulator PIT 2026',
     'kalkulator B2B',
@@ -41,9 +45,9 @@ export const metadata: Metadata = {
     'kalkulator dla freelancera',
     'kalkulator dla programisty',
   ],
-  authors: [{ name: 'JDG Kalkulator' }],
-  creator: 'JDG Kalkulator',
-  publisher: 'JDG Kalkulator',
+  authors: [{ name: 'Ile Zostanie' }],
+  creator: 'Ile Zostanie',
+  publisher: 'Ile Zostanie',
   robots: {
     index: true,
     follow: true,
@@ -59,25 +63,16 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'pl_PL',
     url: siteUrl,
-    siteName: 'Kalkulator ZUS i PIT 2026',
-    title: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
+    siteName: 'Ile Zostanie?',
+    title: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
     description:
-      'Porównaj formy opodatkowania JDG, sp. z o.o. i B2B vs etat. Sprawdź ile zarobisz na rękę w 2026 roku.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Kalkulator ZUS i PIT 2026',
-      },
-    ],
+      'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Porównaj JDG, sp. z o.o. i B2B vs etat.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kalkulator ZUS i PIT 2026 | JDG, Sp. z o.o., B2B vs Etat',
+    title: 'Ile Zostanie? | Kalkulator ZUS i PIT 2026',
     description:
-      'Porównaj formy opodatkowania i sprawdź ile zarobisz na rękę w 2026 roku.',
-    images: ['/og-image.png'],
+      'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach w 2026 roku.',
   },
   alternates: {
     canonical: siteUrl,
@@ -92,9 +87,9 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       '@id': `${siteUrl}/#webapp`,
-      name: 'Kalkulator ZUS i PIT 2026',
+      name: 'Ile Zostanie? - Kalkulator ZUS i PIT',
       description:
-        'Bezpłatny kalkulator do porównania form opodatkowania JDG, sp. z o.o. oraz B2B vs etat.',
+        'Sprawdź ile zostanie Ci na rękę po ZUS i podatkach. Porównaj JDG, sp. z o.o. oraz B2B vs etat.',
       url: siteUrl,
       applicationCategory: 'FinanceApplication',
       operatingSystem: 'Any',
@@ -104,6 +99,7 @@ const jsonLd = {
         priceCurrency: 'PLN',
       },
       featureList: [
+        'Oblicz ile zostanie na rękę',
         'Kalkulator JDG (skala, liniowy, ryczałt)',
         'Kalkulator sp. z o.o.',
         'Porównanie JDG vs sp. z o.o.',
@@ -115,7 +111,7 @@ const jsonLd = {
     {
       '@type': 'Organization',
       '@id': `${siteUrl}/#organization`,
-      name: 'JDG Kalkulator',
+      name: 'Ile Zostanie',
       url: siteUrl,
       logo: `${siteUrl}/logo.png`,
     },
@@ -123,7 +119,7 @@ const jsonLd = {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
       url: siteUrl,
-      name: 'Kalkulator ZUS i PIT 2026',
+      name: 'Ile Zostanie?',
       publisher: {
         '@id': `${siteUrl}/#organization`,
       },
@@ -153,8 +149,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="overflow-x-hidden font-sans antialiased">
+      <body className="overflow-x-hidden font-sans antialiased" suppressHydrationWarning>
+        <Analytics />
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

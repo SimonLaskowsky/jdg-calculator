@@ -11,7 +11,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <Calculator />
+        <Calculator defaultTab="jdg" />
         <FAQ />
         <Guide />
       </main>
